@@ -45,9 +45,9 @@ From: rgb-tianhe2-base.sif
     cd garfield++-build
     mkdir build
     cd build
-    cmake -G Ninja ../src/ -DCMAKE_INSTALL_PREFIX=/opt/garfield++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS='-march=ivybridge' -DCMAKE_CXX_FLAGS='-march=ivybridge' -DCMAKE_Fortran_FLAGS='-march=ivybridge' -DBUILD_SHARED_LIBS=ON -DUSE_LIBMVEC=ON -DTARGET_ARCHITECTURE=ivy-bridge
-    ninja
-    ninja install
+    cmake ../src/ -DCMAKE_INSTALL_PREFIX=/opt/garfield++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS='-march=ivybridge' -DCMAKE_CXX_FLAGS='-march=ivybridge' -DCMAKE_Fortran_FLAGS='-march=ivybridge' -DBUILD_SHARED_LIBS=ON -DUSE_LIBMVEC=ON -DTARGET_ARCHITECTURE=ivy-bridge
+    make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l)
+    make install
     cd ../..
     rm -rf garfield++-build
 
