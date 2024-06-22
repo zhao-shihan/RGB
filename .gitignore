@@ -1,0 +1,9 @@
+.token
+*.log
+*.old
+*.out
+*.sif
+g4data/
+MACE/
+old/
+tmp/
