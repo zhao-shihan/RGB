@@ -93,9 +93,9 @@ From: {{BASE}}
         update_root_env $arch
         mkdir build-$arch
         cd build-$arch
-        cmake ../src/ -DCMAKE_INSTALL_PREFIX=/opt/$arch/garfield++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch" -DCMAKE_Fortran_FLAGS="-march=$arch" -DBUILD_SHARED_LIBS=ON -DUSE_LIBMVEC=ON -DTARGET_ARCHITECTURE=$arch
-        make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l)
-        make install
+        cmake -G Ninja ../src/ -DCMAKE_INSTALL_PREFIX=/opt/$arch/garfield++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch" -DCMAKE_Fortran_FLAGS="-march=$arch" -DBUILD_SHARED_LIBS=ON -DUSE_LIBMVEC=ON -DTARGET_ARCHITECTURE=$arch
+        ninja
+        ninja install
         cd ..
     done
     cd ..
