@@ -1,10 +1,10 @@
-# RGB (*R*OOT and *G*eant4 *b*asic apptainer container)
+# RGB (*R*OOT and *G*eant4 *b*asic apptainer image)
 
 These containers contain pre-built, optimized ROOT, Geant4, MPI, etc. and their dependencies.
 
 ## Contents
 
-- [RGB (*R*OOT and *G*eant4 *b*asic apptainer container)](#rgb-root-and-geant4-basic-apptainer-container)
+- [RGB (*R*OOT and *G*eant4 *b*asic apptainer image)](#rgb-root-and-geant4-basic-apptainer-image)
   - [Contents](#contents)
   - [Quick start](#quick-start)
     - [How to pull](#how-to-pull)
