@@ -2,7 +2,7 @@ Bootstrap: localimage
 From: rgb-base.sif
 
 %arguments
-    MPICH_VERSION=4.2.1
+    MPICH_VERSION=4.2.2
 
 %post
     apt -y update
@@ -20,7 +20,7 @@ From: rgb-base.sif
     for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
         mkdir build-$arch
         cd build-$arch
-        ../mpich-{{MPICH_VERSION}}/configure --build=x86_64-linux-gnu --prefix=/opt/$arch/mpich --disable-error-checking --enable-tag-error-bits --disable-timing --disable-g --disable-mpit-pvars --enable-fast=O3,ndebug,alwaysinline --enable-romio --enable-fortran --enable-threads=multiple --disable-dependency-tracking --enable-shared --disable-static --with-device=ch4:ofi --with-ch4-shmmods=posix CC=clang CXX=clang++ CFLAGS="-march=$arch" CXXFLAGS="-march=$arch" FCFLAGS="-march=$arch" FFLAGS="-march=$arch" &
+        ../mpich-{{MPICH_VERSION}}/configure --build=x86_64-linux-gnu --prefix=/opt/$arch/mpich --disable-error-checking --enable-tag-error-bits --disable-timing --disable-g --disable-mpit-pvars --enable-fast=O3,ndebug,alwaysinline --enable-romio --enable-fortran --enable-threads=multiple --disable-dependency-tracking --enable-shared --disable-static --with-device=ch4:ofi --with-ch4-shmmods=posix CC=cc CXX=c++ CFLAGS="-march=$arch" CXXFLAGS="-march=$arch" FCFLAGS="-march=$arch" FFLAGS="-march=$arch" &
         cd ..
     done
     wait

@@ -34,5 +34,5 @@ From: rgb-base.sif
         RUNTIME_CPU_ARCH=x86-64-v2
     fi
 
-    export OMPI_CC=clang
-    export OMPI_CXX=clang++
+    # export OMPI_CC=clang
+    # export OMPI_CXX=clang++
