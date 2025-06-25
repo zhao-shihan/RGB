@@ -2,7 +2,7 @@ Bootstrap: localimage
 From: rgb-base.sif
 
 %arguments
-    MPICH_VERSION=4.3.0
+    MPICH_VERSION=4.3.1
 
 %post
     apt -y update
