@@ -3,7 +3,7 @@ From: debian:{{DEBIAN_VERSION}}
 
 %arguments
     DEBIAN_VERSION=trixie-slim
-    ROOT_VERSION=6.32.12
+    ROOT_VERSION=6.36.00
     GEANT4_VERSION=11.3.2
     G4NDL_VERSION=4.7.1
     G4EMLOW_VERSION=8.6.1

@@ -7,7 +7,7 @@ From: rgb-base.sif
 %post
     apt -y update
     apt -y full-upgrade
-    apt -y install rdma-core librdmacm-dev libglu1-mesa-dev libglew-dev libftgl-dev libafterimage-dev qt3d5-dev libxmu-dev qtwebengine5-dev
+    apt -y install rdma-core librdmacm-dev libglu1-mesa-dev libglew-dev libftgl-dev libafterimage-dev qt3d5-dev qt6-3d-dev libxmu-dev qtwebengine6-dev
     apt -y autopurge
     apt clean
 

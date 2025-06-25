@@ -16,7 +16,7 @@ From: {{BASE}}
     for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
         mkdir build-$arch
         cd build-$arch
-        cmake -G Ninja ../src/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -Dfftw3=ON -Dgviz=ON -Dimt=OFF -Dmathmore=ON -Dmpi=ON -Dqt5web=ON -Dshadowpw=ON -Dsoversion=ON -Dunuran=ON -During=ON -DCMAKE_INSTALL_PREFIX=/opt/$arch/root -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch"
+        cmake -G Ninja ../src/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -Dfftw3=ON -Dgviz=ON -Dimt=OFF -Dmathmore=ON -Dmpi=ON -Dqt6web=ON -Dshadowpw=ON -Dsoversion=ON -Dunuran=ON -During=ON -DCMAKE_INSTALL_PREFIX=/opt/$arch/root -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch"
         ninja
         ninja install
         cd ..
