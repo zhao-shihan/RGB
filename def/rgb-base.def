@@ -91,7 +91,10 @@ From: debian:{{DEBIAN_VERSION}}
     mv G4ABLA.{{G4ABLA_VERSION}}.tar.gz geant4-data/G4ABLA.tar.gz
     mv G4INCL.{{G4INCL_VERSION}}.tar.gz geant4-data/G4INCL.tar.gz
     mv G4ENSDFSTATE.{{G4ENSDFSTATE_VERSION}}.tar.gz geant4-data/G4ENSDFSTATE.tar.gz
+    mv G4CHANNELING.{{G4CHANNELING_VERSION}}.tar.gz geant4-data/G4CHANNELING.tar.gz
     mv G4TENDL.{{G4TENDL_VERSION}}.tar.gz geant4-data/G4TENDL.tar.gz
+    mv G4NUDEXLIB.{{G4NUDEXLIB_VERSION}}.tar.gz geant4-data/G4NUDEXLIB.tar.gz
+    mv G4URRPT.{{G4URRPT_VERSION}}.tar.gz geant4-data/G4URRPT.tar.gz
 
     cd geant4-data
     tar -xf G4NDL.tar.gz
@@ -116,8 +119,14 @@ From: debian:{{DEBIAN_VERSION}}
     rm G4INCL.tar.gz
     tar -xf G4ENSDFSTATE.tar.gz
     rm G4ENSDFSTATE.tar.gz
+    tar -xf G4CHANNELING.tar.gz
+    rm G4CHANNELING.tar.gz
     tar -xf G4TENDL.tar.gz
     rm G4TENDL.tar.gz
+    tar -xf G4NUDEXLIB.tar.gz
+    rm G4NUDEXLIB.tar.gz
+    tar -xf G4URRPT.tar.gz
+    rm G4URRPT.tar.gz
     cd ..
 
     # update-alternatives --set cc $(which clang)
