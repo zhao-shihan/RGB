@@ -1,4 +1,5 @@
 .token
+.vscode/
 *.log
 *.old
 *.out

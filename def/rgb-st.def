@@ -7,14 +7,13 @@ From: {{BASE}}
 %post
     apt -y update
     apt -y full-upgrade
-    apt -y install libtbb-dev
     apt -y autopurge
     apt clean
 
     cd /opt
 
     cd root-build
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
         cmake -G Ninja ../src/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -Dfftw3=ON -Dgviz=ON -Dimt=ON -Dmathmore=ON -Dmpi=ON -Dqt6web=ON -Dshadowpw=ON -Dsoversion=ON -Dunuran=ON -During=ON -DCMAKE_INSTALL_PREFIX=/opt/$arch/root -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch"
@@ -26,10 +25,10 @@ From: {{BASE}}
     rm -rf root-build
 
     cd geant4-build
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
-        cmake -G Ninja ../src/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON -DGEANT4_INSTALL_DATADIR=/opt/geant4-data -DGEANT4_USE_GDML=ON -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_RAYTRACER_X11=ON -DGEANT4_USE_SYSTEM_ZLIB=ON -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DGEANT4_INSTALL_PACKAGE_CACHE=OFF -DGEANT4_INSTALL_DATASETS_TENDL=ON -DGEANT4_INSTALL_DATASETS_NUDEXLIB=ON -DGEANT4_INSTALL_DATASETS_URRPT=ON -DGEANT4_USE_TBB=ON -DCMAKE_INSTALL_PREFIX=/opt/$arch/geant4 -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch"
+        cmake -G Ninja ../src/ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON -DGEANT4_BUILD_MULTITHREADED=OFF -DGEANT4_INSTALL_DATADIR=/opt/geant4-data -DGEANT4_USE_GDML=ON -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_RAYTRACER_X11=ON -DGEANT4_USE_SYSTEM_ZLIB=ON -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DGEANT4_INSTALL_PACKAGE_CACHE=OFF -DGEANT4_INSTALL_DATASETS_TENDL=ON -DGEANT4_INSTALL_DATASETS_NUDEXLIB=ON -DGEANT4_INSTALL_DATASETS_URRPT=ON -DCMAKE_INSTALL_PREFIX=/opt/$arch/geant4 -DCMAKE_C_FLAGS="-march=$arch" -DCMAKE_CXX_FLAGS="-march=$arch"
         ninja
         ninja install
         cd ..
@@ -52,7 +51,7 @@ From: {{BASE}}
     }
 
     cd garfield++-build
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         update_root_env $arch
         mkdir build-$arch
         cd build-$arch

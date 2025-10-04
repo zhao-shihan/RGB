@@ -7,7 +7,7 @@ From: rgb-base.sif
 %post
     apt -y update
     apt -y full-upgrade
-    apt -y install rdma-core librdmacm-dev libglu1-mesa-dev libglew-dev libftgl-dev libafterimage-dev qt3d5-dev qt6-3d-dev libxmu-dev qt6-webengine-dev
+    apt -y install libfabric-dev libhwloc-dev libpmix-dev libibverbs-dev rdma-core librdmacm-dev
     apt -y autopurge
     apt clean
 
@@ -17,22 +17,46 @@ From: rgb-base.sif
     wget -c -t=999 https://www.mpich.org/static/downloads/{{MPICH_VERSION}}/mpich-{{MPICH_VERSION}}.tar.gz -O mpich.tar.gz
     tar -xf mpich.tar.gz
 
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
-        ../mpich-{{MPICH_VERSION}}/configure --build=x86_64-linux-gnu --prefix=/opt/$arch/mpich --disable-error-checking --enable-tag-error-bits --disable-timing --disable-g --disable-mpit-pvars --enable-fast=O3,ndebug,alwaysinline --enable-romio --enable-fortran --enable-threads=multiple --disable-dependency-tracking --enable-shared --disable-static --with-device=ch4:ofi --with-ch4-shmmods=posix CC=cc CXX=c++ CFLAGS="-march=$arch" CXXFLAGS="-march=$arch" FCFLAGS="-march=$arch" FFLAGS="-march=$arch" &
+        ../mpich-{{MPICH_VERSION}}/configure \
+            --prefix=/opt/$arch/mpich \
+            --build=x86_64-unknown-linux-gnu \
+            --disable-g \
+            --enable-fast=O3,ndebug,alwaysinline \
+            --enable-threads=multiple \
+            --disable-dependency-tracking \
+            --enable-shared \
+            --disable-static \
+            --disable-doc \
+            --with-device=ch4:ofi \
+            --with-pic \
+            --with-libfabric=/usr \
+            --with-hwloc=/usr \
+            --with-pmix=/usr \
+            CC=cc \
+            CXX=c++ \
+            CFLAGS="-march=$arch" \
+            CXXFLAGS="-march=$arch" \
+            FFLAGS="-march=$arch" \
+            FCFLAGS="-march=$arch" \
+            MPICHLIB_CFLAGS="-O3 -flto -DNDEBUG -DNVALGRIND" \
+            MPICHLIB_CXXFLAGS="-O3 -flto -DNDEBUG -DNVALGRIND" \
+            MPICHLIB_FFLAGS="-O3 -flto" \
+            MPICHLIB_FCFLAGS="-O3 -flto" &
         cd ..
     done
     wait
 
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         cd build-$arch
         make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l) &
         cd ..
     done
     wait
 
-    for arch in 'x86-64-v4' 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v3'; do
         cd build-$arch
         make install
         cd ..
@@ -45,27 +69,6 @@ From: rgb-base.sif
     MPI mpich-{{MPICH_VERSION}}
 
 %environment
-    cpu_has_feature() {
-        if test -n "$(grep flags /proc/cpuinfo | grep $1)"; then
-            # 0 = true
-            return 0
-        else
-            # 1 = false
-            return 1
-        fi
-    }
-
-    if cpu_has_feature avx512f && cpu_has_feature avx512bw && cpu_has_feature avx512cd && cpu_has_feature avx512dq && cpu_has_feature avx512vl; then
-        RUNTIME_CPU_ARCH=x86-64-v4
-    elif cpu_has_feature avx && cpu_has_feature avx2 && cpu_has_feature bmi && cpu_has_feature bmi2 && cpu_has_feature f16c && cpu_has_feature fma && cpu_has_feature movbe && cpu_has_feature xsave; then
-        RUNTIME_CPU_ARCH=x86-64-v3
-    elif cpu_has_feature cx16 && cpu_has_feature lahf && cpu_has_feature popcnt && cpu_has_feature sse3 && cpu_has_feature sse4.1 && cpu_has_feature sse4.2 && cpu_has_feature ssse3; then
-        RUNTIME_CPU_ARCH=x86-64-v2
-    else
-        echo "Warning: It seems that even x86-64-v2 is not available. Try another machine if you cannot run."
-        RUNTIME_CPU_ARCH=x86-64-v2
-    fi
-
     MPICH_DIR=/opt/$RUNTIME_CPU_ARCH/mpich
     export PATH=$MPICH_DIR/bin:$PATH
     export LIBRARY_PATH=$MPICH_DIR/lib:$LIBRARY_PATH

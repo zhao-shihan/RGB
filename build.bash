@@ -15,14 +15,6 @@ function build {
             --build-arg FROM=rgb-$1.sif \
             rgb-$1-slim.sif \
             def/slim.def
-    apptainer build \
-        --build-arg BASE=rgb-$1-base.sif \
-        rgb-$1-mt.sif \
-        def/rgb-mt.def &&
-        apptainer build \
-            --build-arg FROM=rgb-$1-mt.sif \
-            rgb-$1-mt-slim.sif \
-            def/slim.def
 }
 
 build mpich &

@@ -25,26 +25,20 @@ These containers contain pre-built, optimized ROOT, Geant4, MPI, etc. and their 
 **Pull the image by:**
 
 - **`apptainer pull oras://ghcr.io/zhao-shihan/rgb:<tag><aux>`**
-- **`<tag>` can be one of the followings: `mpich`, `openmpi`, and `tianhe2`.**
-- **`<aux>` can be nothing or `-mt` (for multi-threaded G4 and ROOT) or `-slim` (do not contain G4 data, smaller in size, but you need to install Geant4 data in your machine and setup environment variables) or `-mt-slim` (combines the two).**
+- **`<tag>` can be one of the followings: `mpich`, `openmpi`.**
+- **`<aux>` can be nothing or `-slim`. `-slim` version do not contain G4 data, smaller in size, but you need to install Geant4 data in your machine and setup environment variables.**
 
-For example, `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-mt` pulls down an container that MPI library is MPICH, and G4 and ROOT are multi-threading enabled, `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2-slim` pulls down an container specialized for Tianhe-2 and contains single-threaded G4 and ROOT (parallel computing is support by MPI).
+For example, `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich` pulls down an container that MPI library is MPICH.
 
 **You should choose the correct MPI tag that compatible with MPI that installed in your machine, in order to do parallel computation correctly.** 
 
 If you don't care about MPI and just want a multi-purpose container , then
 
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-mt`
+- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich`
 
 should be good enough.
 
-If you are going to run the container on Tianhe-2 supercomputer, here is a specialization:
-
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2`
-
-or with `-mt` or `-slim` or `-mt-slim`, up to your purpose.
-
-Available pull commands are listed in the following section.
+All available pull commands are listed in the following section.
 
 ### How to run
 
@@ -77,7 +71,7 @@ After that, add the following line in e.g. `~/.bashrc`:
 This line adds the RGB container directory into the `PATH`.
 After restarted the terminal/session, you can use the container by entering `rgb` directly:
 
-- `rgb root` (or `rgb root.exe` for Tianhe-2 specialization)
+- `rgb root`
   
 and it should show the ROOT interface.
 
@@ -129,23 +123,12 @@ You can also compile your favorite applications that depend on ROOT/Geant4 with 
 ## Pull command list
 
 - `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-mt`
 - `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-slim`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-mt-slim`
 - `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-mt`
 - `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-slim`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-mt-slim`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2-mt`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2-slim`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:tianhe2-mt-slim`
 
 ## Notice
 
 ### About SIMD
 
-SIMD support is enabled and auto-detected at runtime, by probing the host CPU features. Supported instruction sets includes x86-64-v4 (up to AVX512F, etc., binaries in /opt/x86-64-v4), x86-64-v3 (up to AVX2, AVX, FMA, etc., binaries in /opt/x86-64-v3) and x86-64-v2 (up to SSE4.2, SSSE3, SSE3, etc., binaries in /opt/x86-64-v2).
-It will automatically choose the most advanced instruction sets available on your machine. x86-64-v2 should be available on almost all amd64 machines, except for you grandpa's.
-
-For Tianhe-2 specialization the adaptive SIMD is not enabled and only one implementation compiled with `-march=ivybridge` is contained in the container.
+SIMD support is enabled. Host instruction sets should support x86_64 v3 (including AVX2, AVX, FMA, etc.). x86_64 v3 should be available on x86_64 machines produced after 2015.
