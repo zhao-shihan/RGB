@@ -7,7 +7,7 @@ From: rgb-base.sif
 %post
     apt -y update
     apt -y full-upgrade
-    apt -y install libfabric-dev libhwloc-dev libpmix-dev libibverbs-dev rdma-core librdmacm-dev
+    apt -y install libfabric-dev libhwloc-dev libibverbs-dev rdma-core librdmacm-dev libpsm2-dev libpsm-infinipath1-dev
     apt -y autopurge
     apt clean
 
@@ -17,7 +17,7 @@ From: rgb-base.sif
     wget -c -t=999 https://www.mpich.org/static/downloads/{{MPICH_VERSION}}/mpich-{{MPICH_VERSION}}.tar.gz -O mpich.tar.gz
     tar -xf mpich.tar.gz
 
-    for arch in 'x86-64-v3'; do
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         mkdir build-$arch
         cd build-$arch
         ../mpich-{{MPICH_VERSION}}/configure \
@@ -34,9 +34,10 @@ From: rgb-base.sif
             --with-pic \
             --with-libfabric=/usr \
             --with-hwloc=/usr \
-            --with-pmix=/usr \
             CC=cc \
             CXX=c++ \
+            F77=f77 \
+            FC=f95 \
             CFLAGS="-march=$arch" \
             CXXFLAGS="-march=$arch" \
             FFLAGS="-march=$arch" \
@@ -49,14 +50,14 @@ From: rgb-base.sif
     done
     wait
 
-    for arch in 'x86-64-v3'; do
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         cd build-$arch
         make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l) &
         cd ..
     done
     wait
 
-    for arch in 'x86-64-v3'; do
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         cd build-$arch
         make install
         cd ..

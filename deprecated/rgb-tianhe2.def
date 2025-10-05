@@ -27,14 +27,14 @@ From: rgb-tianhe2-base.sif
     cd ../..
     rm -rf geant4-build
 
-    cd garfield++-build
+    cd garfieldpp-build
     mkdir build
     cd build
-    cmake ../src/ -DCMAKE_INSTALL_PREFIX=/opt/garfield++ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS='-march=ivybridge' -DCMAKE_CXX_FLAGS='-march=ivybridge' -DCMAKE_Fortran_FLAGS='-march=ivybridge' -DBUILD_SHARED_LIBS=ON
+    cmake ../src/ -DCMAKE_INSTALL_PREFIX=/opt/garfieldpp -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=c++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_C_STANDARD=17 -DCMAKE_CXX_STANDARD=20 -DCMAKE_C_FLAGS='-march=ivybridge' -DCMAKE_CXX_FLAGS='-march=ivybridge' -DCMAKE_Fortran_FLAGS='-march=ivybridge' -DBUILD_SHARED_LIBS=ON
     make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l)
     make install
     cd ../..
-    rm -rf garfield++-build
+    rm -rf garfieldpp-build
 
 %environment
     GEANT4_DIR=/opt/geant4
@@ -55,9 +55,9 @@ From: rgb-tianhe2-base.sif
     export ROOTSYS=$ROOT_DIR
     export CLING_STANDARD_PCH=none
 
-    export GARFIELD_INSTALL=/opt/garfield++
-    export LIBRARY_PATH=$GARFIELD_INSTALL/lib:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$GARFIELD_INSTALL/lib:$LD_LIBRARY_PATH
-    export CMAKE_PREFIX_PATH=$GARFIELD_INSTALL:$CMAKE_PREFIX_PATH
-    export HEED_DATABASE=$GARFIELD_INSTALL/share/Heed/database
-    export PYTHONPATH=$(find $GARFIELD_INSTALL/lib -name site-packages | sed -n 1p):$PYTHONPATH
+    export GARFIELDPP_INSTALL=/opt/garfieldpp
+    export LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LIBRARY_PATH
+    export LD_LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LD_LIBRARY_PATH
+    export CMAKE_PREFIX_PATH=$GARFIELDPP_INSTALL:$CMAKE_PREFIX_PATH
+    export HEED_DATABASE=$GARFIELDPP_INSTALL/share/Heed/database
+    export PYTHONPATH=$(find $GARFIELDPP_INSTALL/lib -name site-packages | sed -n 1p):$PYTHONPATH

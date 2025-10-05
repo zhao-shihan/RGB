@@ -1,6 +1,6 @@
 # RGB (*R*OOT and *G*eant4 *b*asic apptainer image)
 
-These containers contain pre-built, optimized ROOT, Geant4, MPI, etc. and their dependencies.
+These containers ship pre-built, optimized ROOT, Geant4, MPI, etc. and their dependencies.
 
 ## Contents
 
@@ -38,7 +38,7 @@ If you don't care about MPI and just want a multi-purpose container , then
 
 should be good enough.
 
-All available pull commands are listed in the following section.
+All available pull commands are listed [here](#pull-command-list).
 
 ### How to run
 
@@ -131,4 +131,5 @@ You can also compile your favorite applications that depend on ROOT/Geant4 with 
 
 ### About SIMD
 
-SIMD support is enabled. Host instruction sets should support x86_64 v3 (including AVX2, AVX, FMA, etc.). x86_64 v3 should be available on x86_64 machines produced after 2015.
+SIMD support is enabled and auto-detected at runtime, by probing the host CPU features. Supported instruction sets includes x86-64-v3 (up to AVX2, AVX, FMA, etc., binaries in /opt/x86-64-v3) and x86-64-v2 (up to SSE4.2, SSSE3, SSE3, etc., binaries in /opt/x86-64-v2).
+It will automatically choose the most advanced instruction sets available on your machine. Almost all x86 machines produced after 2010 supports x86-64-v2.

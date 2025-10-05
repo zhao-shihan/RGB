@@ -5,6 +5,7 @@ From: debian:{{DEBIAN_VERSION}}
     DEBIAN_VERSION=trixie-slim
     ROOT_VERSION=6.36.04
     GEANT4_VERSION=11.3.2
+    GARFIELDPP_VERSION=5.0
     G4NDL_VERSION=4.7.1
     G4EMLOW_VERSION=8.6.1
     G4PhotonEvaporation_VERSION=6.1
@@ -20,10 +21,15 @@ From: debian:{{DEBIAN_VERSION}}
     G4TENDL_VERSION=1.4
     G4NUDEXLIB_VERSION=1.0
     G4URRPT_VERSION=1.1
+    SOURCE_ARCHIVE_HOST_DIR=
     G4DATA_ARCHIVE_HOST_DIR=
-    GARFIELDPP_VERSION=5.0
 
 %files
+    # Sources
+    {{SOURCE_ARCHIVE_HOST_DIR}}/root_v{{ROOT_VERSION}}.source.tar.gz /opt
+    {{SOURCE_ARCHIVE_HOST_DIR}}/geant4-v{{GEANT4_VERSION}}.tar.gz /opt
+    {{SOURCE_ARCHIVE_HOST_DIR}}/garfieldpp-{{GARFIELDPP_VERSION}}.tar.gz /opt
+    # Geant4 data
     {{G4DATA_ARCHIVE_HOST_DIR}}/G4NDL.{{G4NDL_VERSION}}.tar.gz /opt
     {{G4DATA_ARCHIVE_HOST_DIR}}/G4EMLOW.{{G4EMLOW_VERSION}}.tar.gz /opt
     {{G4DATA_ARCHIVE_HOST_DIR}}/G4PhotonEvaporation.{{G4PhotonEvaporation_VERSION}}.tar.gz /opt
@@ -41,31 +47,17 @@ From: debian:{{DEBIAN_VERSION}}
     {{G4DATA_ARCHIVE_HOST_DIR}}/G4URRPT.{{G4URRPT_VERSION}}.tar.gz /opt
 
 %post
+    sed -i 's/deb\.debian\.org/ftp.cn.debian.org/g' /etc/apt/sources.list.d/debian.sources
+
     apt -y update
     apt -y install apt-utils
     apt -y full-upgrade
     apt -y autopurge
-
-    cd /opt
-
-    apt -y install wget
-
-    mkdir geant4-build root-build garfield++-build
-
-    wget -q -c -t=999 \
-        https://root.cern/download/root_v{{ROOT_VERSION}}.source.tar.gz \
-        -O root-build/root.tar.gz &
-    wget -q -c -t=999 \
-        https://gitlab.cern.ch/geant4/geant4/-/archive/v{{GEANT4_VERSION}}/geant4-v{{GEANT4_VERSION}}.tar.gz \
-        -O geant4-build/geant4.tar.gz &
-    wget -q -c -t=999 \
-        https://gitlab.cern.ch/garfield/garfieldpp/-/archive/{{GARFIELDPP_VERSION}}/garfieldpp-{{GARFIELDPP_VERSION}}.tar.gz \
-        -O garfield++-build/garfield++.tar.gz &
-
     apt -y install \
         build-essential \
         gfortran \
         gdb \
+        wget \
         curl \
         vim \
         nano \
@@ -138,24 +130,30 @@ From: debian:{{DEBIAN_VERSION}}
         python-dev-is-python3 \
         libmimalloc3
 
-    wait
+    cd /opt
 
+    mkdir root-build
+    mv root_v{{ROOT_VERSION}}.source.tar.gz root-build/root.tar.gz
     cd root-build
     tar -xf root.tar.gz
     mv root-{{ROOT_VERSION}} src
     rm root.tar.gz
     cd ..
 
+    mkdir geant4-build
+    mv geant4-v{{GEANT4_VERSION}}.tar.gz geant4-build/geant4.tar.gz
     cd geant4-build
     tar -xf geant4.tar.gz
     mv geant4-v{{GEANT4_VERSION}} src
     rm geant4.tar.gz
     cd ..
 
-    cd garfield++-build
-    tar -xf garfield++.tar.gz
+    mkdir garfieldpp-build
+    mv garfieldpp-{{GARFIELDPP_VERSION}}.tar.gz garfieldpp-build/garfieldpp.tar.gz
+    cd garfieldpp-build
+    tar -xf garfieldpp.tar.gz
     mv garfieldpp-{{GARFIELDPP_VERSION}} src
-    rm garfield++.tar.gz
+    rm garfieldpp.tar.gz
     cd ..
 
     mkdir geant4-data
@@ -243,8 +241,10 @@ From: debian:{{DEBIAN_VERSION}}
     }
     if cpu_has_feature avx && cpu_has_feature avx2 && cpu_has_feature bmi && cpu_has_feature bmi2 && cpu_has_feature f16c && cpu_has_feature fma && cpu_has_feature movbe && cpu_has_feature xsave; then
         RUNTIME_CPU_ARCH=x86-64-v3
+    elif cpu_has_feature cx16 && cpu_has_feature lahf && cpu_has_feature popcnt && cpu_has_feature sse3 && cpu_has_feature sse4.1 && cpu_has_feature sse4.2 && cpu_has_feature ssse3; then
+        RUNTIME_CPU_ARCH=x86-64-v2
     else
-        echo "Warning: x86-64-v3 not available on this machine."
+        echo "Warning: this machine is ancient!"
     fi
 
     export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libmimalloc.so.3:$LD_PRELOAD

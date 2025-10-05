@@ -13,7 +13,7 @@ From: {{BASE}}
     cd /opt
 
     cd root-build
-    for arch in 'x86-64-v3'; do
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         mkdir build-$arch
         cd build-$arch
         cmake -G Ninja ../src/ \
@@ -46,7 +46,7 @@ From: {{BASE}}
     rm -rf root-build
 
     cd geant4-build
-    for arch in 'x86-64-v3'; do
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         mkdir build-$arch
         cd build-$arch
         cmake -G Ninja ../src/ \
@@ -89,8 +89,8 @@ From: {{BASE}}
         export CLING_STANDARD_PCH=none
     }
 
-    cd garfield++-build
-    for arch in 'x86-64-v3'; do
+    cd garfieldpp-build
+    for arch in 'x86-64-v3' 'x86-64-v2'; do
         update_root_env $arch
         mkdir build-$arch
         cd build-$arch
@@ -102,16 +102,16 @@ From: {{BASE}}
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DBUILD_SHARED_LIBS=ON \
-            -DCMAKE_INSTALL_PREFIX=/opt/$arch/garfield++ \
+            -DCMAKE_INSTALL_PREFIX=/opt/$arch/garfieldpp \
             -DCMAKE_C_FLAGS="-march=$arch" \
             -DCMAKE_CXX_FLAGS="-march=$arch" \
-            -DCMAKE_Fortran_FLAGS="-march=$arch" \
+            -DCMAKE_Fortran_FLAGS="-march=$arch"
         make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l)
         make install
         cd ..
     done
     cd ..
-    rm -rf garfield++-build
+    rm -rf garfieldpp-build
 
 %environment
     GEANT4_DIR=/opt/$RUNTIME_CPU_ARCH/geant4
@@ -132,9 +132,9 @@ From: {{BASE}}
     export ROOTSYS=$ROOT_DIR
     export CLING_STANDARD_PCH=none
 
-    export GARFIELD_INSTALL=/opt/$RUNTIME_CPU_ARCH/garfield++
-    export LIBRARY_PATH=$GARFIELD_INSTALL/lib:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$GARFIELD_INSTALL/lib:$LD_LIBRARY_PATH
-    export CMAKE_PREFIX_PATH=$GARFIELD_INSTALL:$CMAKE_PREFIX_PATH
-    export HEED_DATABASE=$GARFIELD_INSTALL/share/Heed/database
-    export PYTHONPATH=$(find $GARFIELD_INSTALL/lib -name site-packages | sed -n 1p):$PYTHONPATH
+    export GARFIELDPP_INSTALL=/opt/$RUNTIME_CPU_ARCH/garfieldpp
+    export LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LIBRARY_PATH
+    export LD_LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LD_LIBRARY_PATH
+    export CMAKE_PREFIX_PATH=$GARFIELDPP_INSTALL:$CMAKE_PREFIX_PATH
+    export HEED_DATABASE=$GARFIELDPP_INSTALL/share/Heed/database
+    export PYTHONPATH=$(find $GARFIELDPP_INSTALL/lib -name site-packages | sed -n 1p):$PYTHONPATH
