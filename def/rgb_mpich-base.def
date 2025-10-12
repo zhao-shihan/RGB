@@ -1,8 +1,8 @@
 Bootstrap: localimage
-From: rgb-base.sif
+From: rgb_base.sif
 
 %arguments
-    MPICH_VERSION=4.3.1
+    MPICH_VERSION=4.3.2
 
 %post
     apt -y update
@@ -34,25 +34,25 @@ From: rgb-base.sif
             --with-pic \
             --with-libfabric=/usr \
             --with-hwloc=/usr \
-            CC=cc \
-            CXX=c++ \
-            F77=f77 \
-            FC=f95 \
+            CC=fastgcc \
+            CXX=fastg++ \
+            F77=fastgfortran \
+            FC=fastgfortran \
             CFLAGS="-march=$arch" \
             CXXFLAGS="-march=$arch" \
             FFLAGS="-march=$arch" \
             FCFLAGS="-march=$arch" \
-            MPICHLIB_CFLAGS="-O3 -flto -DNDEBUG -DNVALGRIND" \
-            MPICHLIB_CXXFLAGS="-O3 -flto -DNDEBUG -DNVALGRIND" \
-            MPICHLIB_FFLAGS="-O3 -flto" \
-            MPICHLIB_FCFLAGS="-O3 -flto" &
+            MPICHLIB_CFLAGS="-O3 -flto=auto -fno-fat-lto-objects -DNDEBUG -DNVALGRIND" \
+            MPICHLIB_CXXFLAGS="-O3 -flto=auto -fno-fat-lto-objects -DNDEBUG -DNVALGRIND" \
+            MPICHLIB_FFLAGS="-O3 -flto=auto -fno-fat-lto-objects" \
+            MPICHLIB_FCFLAGS="-O3 -flto=auto -fno-fat-lto-objects" &
         cd ..
     done
     wait
 
     for arch in 'x86-64-v3' 'x86-64-v2'; do
         cd build-$arch
-        make -j$(grep "processor" /proc/cpuinfo | sort | uniq | wc -l) &
+        make -j$(echo "$(nproc --all) / $(env LC_ALL=C lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc) &
         cd ..
     done
     wait
@@ -70,9 +70,13 @@ From: rgb-base.sif
     MPI mpich-{{MPICH_VERSION}}
 
 %environment
-    MPICH_DIR=/opt/$RUNTIME_CPU_ARCH/mpich
+    MPICH_DIR=/opt/$RUNTIME_X86_VERSION/mpich
     export PATH=$MPICH_DIR/bin:$PATH
     export LIBRARY_PATH=$MPICH_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$MPICH_DIR/lib:$LD_LIBRARY_PATH
     export MANPATH=$MPICH_DIR/share/man:$MANPATH
     export CMAKE_PREFIX_PATH=$MPICH_DIR:$CMAKE_PREFIX_PATH
+
+    export MPICH_CC=fastgcc
+    export MPICH_CXX=fastg++
+    export MPICH_FC=fastgfortran

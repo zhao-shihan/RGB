@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: rgb-base.sif
+From: rgb_base.sif
 
 %post
     apt -y update
@@ -10,3 +10,8 @@ From: rgb-base.sif
 
 %labels
     MPI openmpi-deb13
+
+%environment
+    export OMPI_CC=fastgcc
+    export OMPI_CXX=fastg++
+    export OMPI_FC=fastgfortran

@@ -1,4 +1,4 @@
 for mpi in mpich openmpi; do
-    apptainer sign rgb-$mpi.sif
-    apptainer sign rgb-$mpi-slim.sif
+    apptainer sign rgb_$mpi.sif
+    apptainer sign rgb_$mpi-slim.sif
 done

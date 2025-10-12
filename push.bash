@@ -9,8 +9,8 @@ success_or_exit() {
 success_or_exit "apptainer registry login --username $1 --password $2 oras://ghcr.io"
 
 for mpi in mpich openmpi; do
-    apptainer verify rgb-$mpi.sif &
-    apptainer verify rgb-$mpi-slim.sif &
+    apptainer verify rgb_$mpi.sif &
+    apptainer verify rgb_$mpi-slim.sif &
 done
 wait
 
@@ -35,7 +35,7 @@ auto_retry() {
 }
 
 for mpi in mpich openmpi; do
-    auto_retry 999 "apptainer push rgb-$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$mpi" &
-    auto_retry 999 "apptainer push rgb-$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$mpi-slim" &
+    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$mpi" &
+    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$mpi-slim" &
 done
 wait

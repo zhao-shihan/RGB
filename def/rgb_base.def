@@ -2,7 +2,7 @@ Bootstrap: docker
 From: debian:{{DEBIAN_VERSION}}
 
 %arguments
-    DEBIAN_VERSION=trixie-slim
+    DEBIAN_VERSION=stable-slim
     ROOT_VERSION=6.36.04
     GEANT4_VERSION=11.3.2
     GARFIELDPP_VERSION=5.0
@@ -56,12 +56,14 @@ From: debian:{{DEBIAN_VERSION}}
     apt -y install \
         build-essential \
         gfortran \
+        clang \
         gdb \
         wget \
         curl \
         vim \
         nano \
         unzip \
+        bc \
         git \
         cmake \
         ninja-build \
@@ -129,6 +131,35 @@ From: debian:{{DEBIAN_VERSION}}
         python-is-python3 \
         python-dev-is-python3 \
         libmimalloc3
+
+    fastgcc_path=/usr/local/bin/fastgcc
+    echo '#!/bin/bash' >$fastgcc_path
+    echo $(which gcc)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgcc_path
+    chmod +x $fastgcc_path
+    update-alternatives --install /usr/bin/cc cc $fastgcc_path 100
+
+    fastgxx_path=/usr/local/bin/fastg++
+    echo '#!/bin/bash' >$fastgxx_path
+    echo $(which g++)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgxx_path
+    chmod +x $fastgxx_path
+    update-alternatives --install /usr/bin/c++ c++ $fastgxx_path 100
+
+    fastgfortran_path=/usr/local/bin/fastgfortran
+    echo '#!/bin/bash' >$fastgfortran_path
+    echo $(which gfortran)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgfortran_path
+    chmod +x $fastgfortran_path
+    update-alternatives --install /usr/bin/f77 f77 $fastgfortran_path 100
+    update-alternatives --install /usr/bin/f95 f95 $fastgfortran_path 100
+
+    fastclang_path=/usr/local/bin/fastclang
+    echo '#!/bin/bash' >$fastclang_path
+    echo $(which clang)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastclang_path
+    chmod +x $fastclang_path
+
+    fastclangxx_path=/usr/local/bin/fastclang++
+    echo '#!/bin/bash' >$fastclangxx_path
+    echo $(which clang++)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastclangxx_path
+    chmod +x $fastclangxx_path
 
     cd /opt
 
@@ -230,6 +261,8 @@ From: debian:{{DEBIAN_VERSION}}
     Garfield++ {{GARFIELDPP_VERSION}}
 
 %environment
+    export LC_ALL=C.utf8
+
     cpu_has_feature() {
         if test -n "$(grep flags /proc/cpuinfo | grep $1)"; then
             # 0 = true
@@ -240,16 +273,15 @@ From: debian:{{DEBIAN_VERSION}}
         fi
     }
     if cpu_has_feature avx && cpu_has_feature avx2 && cpu_has_feature bmi && cpu_has_feature bmi2 && cpu_has_feature f16c && cpu_has_feature fma && cpu_has_feature movbe && cpu_has_feature xsave; then
-        RUNTIME_CPU_ARCH=x86-64-v3
+        export RUNTIME_X86_VERSION=x86-64-v3
     elif cpu_has_feature cx16 && cpu_has_feature lahf && cpu_has_feature popcnt && cpu_has_feature sse3 && cpu_has_feature sse4.1 && cpu_has_feature sse4.2 && cpu_has_feature ssse3; then
-        RUNTIME_CPU_ARCH=x86-64-v2
+        export RUNTIME_X86_VERSION=x86-64-v2
     else
         echo "Warning: this machine is ancient!"
     fi
 
     export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libmimalloc.so.3:$LD_PRELOAD
 
-    export LC_ALL=C.utf8
     if test -d /opt/geant4-data; then
         export GEANT4_DATA_DIR=/opt/geant4-data
     fi

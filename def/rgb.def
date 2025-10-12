@@ -18,11 +18,11 @@ From: {{BASE}}
         cd build-$arch
         cmake -G Ninja ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=cc \
-            -DCMAKE_CXX_COMPILER=c++ \
+            -DCMAKE_C_COMPILER=fastclang \
+            -DCMAKE_CXX_COMPILER=fastclang++ \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
-            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
             -Dfftw3=ON \
             -Dgviz=ON \
             -Dmathmore=ON \
@@ -51,8 +51,8 @@ From: {{BASE}}
         cd build-$arch
         cmake -G Ninja ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=cc \
-            -DCMAKE_CXX_COMPILER=c++ \
+            -DCMAKE_C_COMPILER=fastgcc \
+            -DCMAKE_CXX_COMPILER=fastg++ \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
@@ -96,9 +96,9 @@ From: {{BASE}}
         cd build-$arch
         cmake ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=cc \
-            -DCMAKE_CXX_COMPILER=c++ \
-            -DCMAKE_Fortran_COMPILER=f95 \
+            -DCMAKE_C_COMPILER=fastgcc \
+            -DCMAKE_CXX_COMPILER=fastg++ \
+            -DCMAKE_Fortran_COMPILER=fastgfortran \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DBUILD_SHARED_LIBS=ON \
@@ -114,13 +114,13 @@ From: {{BASE}}
     rm -rf garfieldpp-build
 
 %environment
-    GEANT4_DIR=/opt/$RUNTIME_CPU_ARCH/geant4
+    GEANT4_DIR=/opt/$RUNTIME_X86_VERSION/geant4
     export PATH=$GEANT4_DIR/bin:$PATH
     export LIBRARY_PATH=$GEANT4_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$GEANT4_DIR/lib:$LD_LIBRARY_PATH
     export CMAKE_PREFIX_PATH=$GEANT4_DIR:$CMAKE_PREFIX_PATH
 
-    ROOT_DIR=/opt/$RUNTIME_CPU_ARCH/root
+    ROOT_DIR=/opt/$RUNTIME_X86_VERSION/root
     export PATH=$ROOT_DIR/bin:$PATH
     export LIBRARY_PATH=$ROOT_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$ROOT_DIR/lib:$LD_LIBRARY_PATH
@@ -132,7 +132,7 @@ From: {{BASE}}
     export ROOTSYS=$ROOT_DIR
     export CLING_STANDARD_PCH=none
 
-    export GARFIELDPP_INSTALL=/opt/$RUNTIME_CPU_ARCH/garfieldpp
+    export GARFIELDPP_INSTALL=/opt/$RUNTIME_X86_VERSION/garfieldpp
     export LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LD_LIBRARY_PATH
     export CMAKE_PREFIX_PATH=$GARFIELDPP_INSTALL:$CMAKE_PREFIX_PATH
