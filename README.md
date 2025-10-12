@@ -14,7 +14,6 @@ These containers ship pre-built, optimized ROOT, Geant4, MPI, etc. and their dep
     - [Container contents](#container-contents)
     - [Build your own container](#build-your-own-container)
     - [Build and run your own apps](#build-and-run-your-own-apps)
-  - [Pull command list](#pull-command-list)
   - [Notice](#notice)
     - [About SIMD](#about-simd)
 
@@ -38,7 +37,19 @@ If you don't care about MPI and just want a multi-purpose container , then
 
 should be good enough.
 
-All available pull commands are listed [here](#pull-command-list).
+All available pull commands are listed below:
+```bash
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich
+```
+```bash
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-slim
+```
+```bash
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi
+```
+```bash
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-slim
+```
 
 ### How to run
 
@@ -119,13 +130,6 @@ You can also compile your favorite applications that depend on ROOT/Geant4 with 
 - Configure: `rgb cmake -G Ninja path/to/src`
 - Build: `rgb ninja`
 - Run: `rgb path/to/your/app`
-
-## Pull command list
-
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-slim`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi`
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-slim`
 
 ## Notice
 
