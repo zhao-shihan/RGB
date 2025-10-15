@@ -12,7 +12,6 @@ env:
 jobs:
   test-docker-images:
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
       matrix:
         image:
@@ -44,12 +43,9 @@ jobs:
         shell: bash
 
     steps:
-      - name: Setup environment
-        run: |
-          source /environment
-
       - name: Check MPI config
         run: |
+          . /environment
           mpirun --version
           mpiexec --version
           mpicc -v
@@ -61,6 +57,7 @@ jobs:
 
       - name: Test MPI
         run: |
+          . /environment
           mkdir test-mpi && cd test-mpi
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
@@ -69,6 +66,7 @@ jobs:
 
       - name: Check ROOT config
         run: |
+          . /environment
           root-config --prefix
           root-config --cc
           root-config --cxx
@@ -78,6 +76,7 @@ jobs:
 
       - name: Test ROOT
         run: |
+          . /environment
           root -l -q ${ROOT_TUTORIAL_PATH}/hsimple.C
           python ${ROOT_TUTORIAL_PATH}/hsimple.C
           root -l -q ${ROOT_TUTORIAL_PATH}/math/mathmoreIntegration.C
@@ -86,6 +85,7 @@ jobs:
 
       - name: Check Geant4 config
         run: |
+          . /environment
           geant4-config --prefix
           geant4-config --version
           geant4-config --libs
@@ -93,6 +93,7 @@ jobs:
 
       - name: Test Geant4
         run: |
+          . /environment
           geant4-config --prefix
           geant4-config --version
           geant4-config --libs
