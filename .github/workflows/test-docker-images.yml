@@ -49,7 +49,12 @@ jobs:
         run: |
           cat > mpirun-test << EOF
           #!/bin/bash
-          mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@" || mpirun --allow-run-as-root "$@"
+          version_output="$(mpirun --version 2>/dev/null)"
+          if echo "$version_output" | grep 'HYDRA'; then
+              $(pwd)/mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@"
+          elif echo "$version_output" | grep 'Open MPI'; then
+              $(pwd)/mpirun --allow-run-as-root "$@"
+          else
           EOF
           chmod +x mpirun-test
 
