@@ -55,20 +55,22 @@ auto_retry() {
     fi
 }
 
-for mpi in mpich openmpi; do
-    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$mpi" &
-    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$mpi-slim" &
-done
-wait
+# Order matters! Page displays as the inverse order of completed push
+auto_retry 999 "apptainer push rgb_openmpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:openmpi-slim"
+auto_retry 999 "apptainer push rgb_mpich-slim.sif oras://ghcr.io/zhao-shihan/rgb:mpich-slim"
+auto_retry 999 "apptainer push rgb_openmpi.sif oras://ghcr.io/zhao-shihan/rgb:openmpi"
+auto_retry 999 "apptainer push rgb_mpich.sif oras://ghcr.io/zhao-shihan/rgb:mpich"
 
-auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:latest"
-auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION" &
+# Push other tags
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:slim" &
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:latest" &
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-slim" &
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION" &
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-slim" &
 for mpi in mpich openmpi; do
     auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi" &
-    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi" &
     auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi-slim" &
+    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi" &
     auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi-slim" &
 done
 wait
