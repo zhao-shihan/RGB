@@ -150,31 +150,31 @@ From: debian:{{DEBIAN_VERSION}}
 
     fastgcc_path=/usr/local/bin/fastgcc
     echo '#!/bin/bash' >$fastgcc_path
-    echo $(which gcc)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgcc_path
+    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgcc_path
     chmod +x $fastgcc_path
     update-alternatives --install /usr/bin/cc cc $fastgcc_path 100
 
     fastgxx_path=/usr/local/bin/fastg++
     echo '#!/bin/bash' >$fastgxx_path
-    echo $(which g++)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgxx_path
+    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgxx_path
     chmod +x $fastgxx_path
     update-alternatives --install /usr/bin/c++ c++ $fastgxx_path 100
 
     fastgfortran_path=/usr/local/bin/fastgfortran
     echo '#!/bin/bash' >$fastgfortran_path
-    echo $(which gfortran)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastgfortran_path
+    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgfortran_path
     chmod +x $fastgfortran_path
     update-alternatives --install /usr/bin/f77 f77 $fastgfortran_path 100
     update-alternatives --install /usr/bin/f95 f95 $fastgfortran_path 100
 
     fastclang_path=/usr/local/bin/fastclang
     echo '#!/bin/bash' >$fastclang_path
-    echo $(which clang)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastclang_path
+    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastclang_path
     chmod +x $fastclang_path
 
     fastclangxx_path=/usr/local/bin/fastclang++
     echo '#!/bin/bash' >$fastclangxx_path
-    echo $(which clang++)' -march=$RUNTIME_X86_VERSION -funsafe-math-optimizations $@' >>$fastclangxx_path
+    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastclangxx_path
     chmod +x $fastclangxx_path
 
     cd /opt
