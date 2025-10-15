@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  MusAirS_VERSION: 0.25.1015
+
 jobs:
   test-docker-images:
     runs-on: ubuntu-latest
@@ -114,9 +117,11 @@ jobs:
       - name: Test RGB
         run: |
           . /environment
-          git clone https://github.com/zhao-shihan/MusAirS.git
-          cd MusAirS
+          wget -nv -t=15 https://github.com/zhao-shihan/MusAirS/archive/refs/tags/v${MusAirS_VERSION}.tar.gz -O MusAirS-${MusAirS_VERSION}.tar.gz
+          tar -xvf MusAirS-${MusAirS_VERSION}.tar.gz
+          cd MusAirS-${MusAirS_VERSION}
           mkdir build && cd build
           cmake -G Ninja ..
           ninja
-          ${{ steps.vars.outputs.wd }}/mpirun-test ./MusAirS run_p_AMS_lite.mac
+          [[ -n "$GEANT4_DATA_DIR" ]] ||
+             ${{ steps.vars.outputs.wd }}/mpirun-test ./MusAirS run_p_AMS_lite.mac
