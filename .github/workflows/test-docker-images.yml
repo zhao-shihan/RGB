@@ -52,7 +52,7 @@ jobs:
           . /environment
           n_physical_core=${{ steps.vars.outputs.n_physical_core }}
           mpi_version_grep_openmpi="$(echo $(mpirun --version 2>/dev/null) | grep 'Open MPI')"
-          echo "#!/bin/bash" >mpirun-test
+          echo '#!/bin/bash' >mpirun-test
           echo "if [[ -n \"$mpi_version_grep_openmpi\" ]]; then" >>mpirun-test
           echo "    mpirun --allow-run-as-root \$@" >>mpirun-test
           echo "else" >>mpirun-test
