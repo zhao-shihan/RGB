@@ -51,7 +51,7 @@ jobs:
         run: |
           . /environment
           n_physical_core=${{ steps.vars.outputs.n_physical_core }}
-          mpi_version_grep_openmpi=$(echo $(mpirun --version 2>/dev/null) | grep 'Open MPI')
+          mpi_version_grep_openmpi="$(echo $(mpirun --version 2>/dev/null) | grep 'Open MPI')"
           cat > mpirun-test << EOF
           #!/bin/bash
           if [[ -z "$mpi_version_grep_openmpi" ]]; then
