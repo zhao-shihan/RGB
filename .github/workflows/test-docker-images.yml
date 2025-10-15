@@ -40,6 +40,10 @@ jobs:
     name: Test ${{ matrix.image }}
 
     steps:
+      - name: Setup environment
+        run: |
+          source /environment
+
       - name: Check MPI config
         run: |
           mpirun --version
@@ -57,7 +61,7 @@ jobs:
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
-          mpiexec -n 4 ./mpiBench
+          mpiexec -n 4 ./mpiBench || mpiexec --allow-run-as-root -n 4 ./mpiBench
 
       - name: Check ROOT config
         run: |
