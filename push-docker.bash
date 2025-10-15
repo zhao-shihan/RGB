@@ -73,7 +73,6 @@ auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:mpich"
 auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:slim" &
 auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest" &
 auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest-slim" &
-auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION" &
 auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-slim" &
 for mpi in mpich openmpi; do
     auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest-$mpi" &
@@ -82,3 +81,6 @@ for mpi in mpich openmpi; do
     auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-$mpi-slim" &
 done
 wait
+
+# Order matters! Page displays as the inverse order of completed push
+auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION"

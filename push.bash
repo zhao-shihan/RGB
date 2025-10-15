@@ -65,7 +65,6 @@ auto_retry 999 "apptainer push rgb_mpich.sif oras://ghcr.io/zhao-shihan/rgb:mpic
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:slim" &
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:latest" &
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-slim" &
-auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION" &
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-slim" &
 for mpi in mpich openmpi; do
     auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi" &
@@ -74,3 +73,6 @@ for mpi in mpich openmpi; do
     auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi-slim" &
 done
 wait
+
+# Order matters! Page displays as the inverse order of completed push
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION"

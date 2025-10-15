@@ -142,9 +142,10 @@ It will automatically choose the most advanced instruction sets available on you
 ```bash
 # build
 bash build.bash
-sudo bash build-docker.bash
 # sign apptainer image
 bash sign.bash
+# convert apptainer images to docker images
+sudo bash build-docker.bash
 # push
 bash push.bash <version tag> <username> <token>
 sudo bash push-docker.bash <version tag> <username> <token>
