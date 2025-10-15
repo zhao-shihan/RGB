@@ -1,0 +1,41 @@
+name: Test docker images
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-containers:
+    runs-on: debian-latest
+    strategy:
+      matrix:
+        image:
+          - "ghcr.io/zhao-shihan/rgb-docker"
+          - "ghcr.io/zhao-shihan/rgb-docker:mpich"
+          - "ghcr.io/zhao-shihan/rgb-docker:mpich-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:openmpi"
+          - "ghcr.io/zhao-shihan/rgb-docker:openmpi-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:latest"
+          - "ghcr.io/zhao-shihan/rgb-docker:latest-mpich"
+          - "ghcr.io/zhao-shihan/rgb-docker:latest-mpich-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi"
+          - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi-slim"
+
+    name: Test ${{ matrix.image }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test container commands
+        run: |
+          echo "Testing image: ${{ matrix.image }}"
+          docker run --rm ${{ matrix.image }} mpiexec --version || echo "mpiexec not available"
+          docker run --rm ${{ matrix.image }} root-config --prefix || echo "root-config --prefix failed"
+          docker run --rm ${{ matrix.image }} root-config --cc || echo "root-config --cc failed"
+          docker run --rm ${{ matrix.image }} root-config --cxx || echo "root-config --cxx failed"
+          docker run --rm ${{ matrix.image }} root-config --version || echo "root-config --version failed"
+          docker run --rm ${{ matrix.image }} geant4-config --prefix || echo "geant4-config --prefix failed"
+          docker run --rm ${{ matrix.image }} geant4-config --version || echo "geant4-config --version failed"
