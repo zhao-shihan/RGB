@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-containers:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
@@ -23,19 +23,26 @@ jobs:
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi-slim"
 
+    container: ${{ matrix.image }}
+
     name: Test ${{ matrix.image }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Check MPI config
+        run: mpiexec --version
 
-      - name: Test container commands
+      - name: Check ROOT config
         run: |
-          echo "Testing image: ${{ matrix.image }}"
-          docker run --rm ${{ matrix.image }} mpiexec --version || echo "mpiexec not available"
-          docker run --rm ${{ matrix.image }} root-config --prefix || echo "root-config --prefix failed"
-          docker run --rm ${{ matrix.image }} root-config --cc || echo "root-config --cc failed"
-          docker run --rm ${{ matrix.image }} root-config --cxx || echo "root-config --cxx failed"
-          docker run --rm ${{ matrix.image }} root-config --version || echo "root-config --version failed"
-          docker run --rm ${{ matrix.image }} geant4-config --prefix || echo "geant4-config --prefix failed"
-          docker run --rm ${{ matrix.image }} geant4-config --version || echo "geant4-config --version failed"
+          root-config --prefix
+          root-config --cc
+          root-config --cxx
+          root-config --version
+          root-config --features
+          root-config --config
+
+      - name: Check Geant4 config
+        run: |
+          geant4-config --prefix
+          geant4-config --version
+          geant4-config --libs
+          geant4-config --cflags
