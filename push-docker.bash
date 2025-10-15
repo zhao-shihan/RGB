@@ -6,11 +6,24 @@ success_or_exit() {
     fi
 }
 
-success_or_exit "echo $2 | docker login ghcr.io --username $1 --password-stdin"
+IMAGE_VERSION=$1
+REGISTRY_USERNAME=$2
+REGISTRY_PASSWORD=$3
+DEFAULT_MPI=mpich
 
+success_or_exit "docker login ghcr.io --username $REGISTRY_USERNAME --password $REGISTRY_PASSWORD"
+
+success_or_exit "docker tag rgb-docker:$DEFAULT_MPI ghcr.io/zhao-shihan/rgb-docker:latest"
+success_or_exit "docker tag rgb-docker:$DEFAULT_MPI ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION"
+success_or_exit "docker tag rgb-docker:$DEFAULT_MPI-slim ghcr.io/zhao-shihan/rgb-docker:latest-slim"
+success_or_exit "docker tag rgb-docker:$DEFAULT_MPI-slim ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-slim"
 for mpi in mpich openmpi; do
     success_or_exit "docker tag rgb-docker:$mpi ghcr.io/zhao-shihan/rgb-docker:$mpi"
+    success_or_exit "docker tag rgb-docker:$mpi ghcr.io/zhao-shihan/rgb-docker:latest-$mpi"
+    success_or_exit "docker tag rgb-docker:$mpi ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-$mpi"
     success_or_exit "docker tag rgb-docker:$mpi-slim ghcr.io/zhao-shihan/rgb-docker:$mpi-slim"
+    success_or_exit "docker tag rgb-docker:$mpi-slim ghcr.io/zhao-shihan/rgb-docker:latest-$mpi-slim"
+    success_or_exit "docker tag rgb-docker:$mpi-slim ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-$mpi-slim"
 done
 
 auto_retry() {
@@ -34,7 +47,19 @@ auto_retry() {
 }
 
 for mpi in mpich openmpi; do
+    auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-$mpi" &
+    auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-$mpi-slim" &
+done
+wait
+
+auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest"
+auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest-slim" &
+auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION" &
+auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$IMAGE_VERSION-slim" &
+for mpi in mpich openmpi; do
     auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$mpi" &
     auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:$mpi-slim" &
+    auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest-$mpi" &
+    auto_retry 999 "docker push ghcr.io/zhao-shihan/rgb-docker:latest-$mpi-slim" &
 done
 wait

@@ -6,7 +6,12 @@ success_or_exit() {
     fi
 }
 
-success_or_exit "apptainer registry login --username $1 --password $2 oras://ghcr.io"
+IMAGE_VERSION=$1
+REGISTRY_USERNAME=$2
+REGISTRY_PASSWORD=$3
+DEFAULT_MPI=mpich
+
+success_or_exit "apptainer registry login --username $REGISTRY_USERNAME --password $REGISTRY_PASSWORD oras://ghcr.io"
 
 for mpi in mpich openmpi; do
     apptainer verify rgb_$mpi.sif &
@@ -37,5 +42,17 @@ auto_retry() {
 for mpi in mpich openmpi; do
     auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$mpi" &
     auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$mpi-slim" &
+done
+wait
+
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:latest"
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION" &
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-slim" &
+auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-slim" &
+for mpi in mpich openmpi; do
+    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi" &
+    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi-slim" &
+    auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi" &
+    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi-slim" &
 done
 wait
