@@ -58,6 +58,7 @@ jobs:
       - name: Test MPI
         run: |
           . /environment
+          lscpu
           mkdir test-mpi && cd test-mpi
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
