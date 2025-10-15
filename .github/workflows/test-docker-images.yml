@@ -72,12 +72,9 @@ jobs:
           main() {
               local mpi_type
               mpi_type=$(detect_mpi_type)
-              
-              echo "检测到 MPI 类型: $mpi_type"
-              
               case $mpi_type in
                   "MPICH")
-                      mpirun -n  "$@"
+                      mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@"
                       ;;
                   "OpenMPI")
                       mpirun --allow-run-as-root "$@"
@@ -105,9 +102,7 @@ jobs:
 
       - name: Test MPI
         run: |
-          pwd && ls -l
           . /environment
-          mkdir test-mpi && cd test-mpi
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
@@ -145,7 +140,9 @@ jobs:
       - name: Test Geant4
         run: |
           . /environment
-          geant4-config --prefix
-          geant4-config --version
-          geant4-config --libs
-          geant4-config --cflags
+          git clone https://github.com/zhao-shihan/MusAirS.git
+          cd MusAirS
+          mkdir build && cd build
+          cmake -G Ninja ..
+          ninja
+          ../../mpirun-test ./MusAirS run_p_AMS_lite.mac
