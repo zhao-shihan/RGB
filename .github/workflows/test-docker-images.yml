@@ -54,10 +54,10 @@ jobs:
           mpi_version_grep_openmpi="$(echo $(mpirun --version 2>/dev/null) | grep 'Open MPI')"
           cat > mpirun-test << EOF
           #!/bin/bash
-          if [[ -z "$mpi_version_grep_openmpi" ]]; then
-              mpirun -n $n_physical_core "$@"
+          if [[ -n "$mpi_version_grep_openmpi" ]]; then
+              mpirun --allow-run-as-root "\$@"
           else
-              mpirun --allow-run-as-root "$@"
+              mpirun -n $n_physical_core "\$@"
           fi
           EOF
           chmod +x mpirun-test
