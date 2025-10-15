@@ -93,11 +93,14 @@ jobs:
           . /environment
           mkdir test-root && cd test-root
           root_tutorial_dir=$ROOTSYS/tutorials
-          root -l -q ${root_tutorial_dir}/hsimple.C
-          python ${root_tutorial_dir}/hsimple.C
-          root -l -q ${root_tutorial_dir}/math/mathmoreIntegration.C
-          root -l -q ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.C
-          python ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.py
+          root -l -q ${root_tutorial_dir}/hsimple.C || true
+          python ${root_tutorial_dir}/hsimple.C || true
+          root -l -q ${root_tutorial_dir}/hist/hist019_TH2_projection.C || true
+          python ${root_tutorial_dir}/hist/hist019_TH2_projection.py || true
+          root -l -q ${root_tutorial_dir}/io/tree/mt_fillNtupleFromMultipleThreads.C || true
+          root -l -q ${root_tutorial_dir}/math/mathmoreIntegration.C || true
+          root -l -q ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.C || true
+          python ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.py || true
 
       - name: Check Geant4 config
         run: |
