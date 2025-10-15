@@ -123,5 +123,5 @@ jobs:
           mkdir build && cd build
           cmake -G Ninja ..
           ninja
-          [[ -n "$GEANT4_DATA_DIR" ]] ||
+          [[ -z "$GEANT4_DATA_DIR" ]] ||
              ${{ steps.vars.outputs.wd }}/mpirun-test ./MusAirS run_p_AMS_lite.mac
