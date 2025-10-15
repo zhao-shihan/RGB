@@ -29,12 +29,12 @@ jobs:
           - "ghcr.io/zhao-shihan/rgb-docker:latest-mpich-slim"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}-mpich"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}-mpich-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}-openmpi"
-          - "ghcr.io/zhao-shihan/rgb-docker:${{ steps.vars.outputs.version }}-openmpi-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-mpich"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-mpich-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-openmpi"
+          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-openmpi-slim"
 
     container: ${{ matrix.image }}
 
