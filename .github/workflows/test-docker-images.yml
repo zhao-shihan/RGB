@@ -90,7 +90,6 @@ jobs:
           fi
           EOF
           chmod +x mpirun-test
-          ls -l
 
       - name: Check MPI config
         run: |
@@ -103,16 +102,15 @@ jobs:
           mpifort -v
           mpif77 -v
           mpif90 -v
-          ls -l
 
       - name: Test MPI
         run: |
+          pwd && ls -l
           . /environment
           mkdir test-mpi && cd test-mpi
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
-          ls -l
           ../mpirun-test ./mpiBench
 
       - name: Check ROOT config
