@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  ROOT_TUTORIAL_PATH: /opt/root/6.36.04/cxx20/tutorials
-
 jobs:
   test-docker-images:
     runs-on: ubuntu-latest
@@ -43,6 +40,11 @@ jobs:
         shell: bash
 
     steps:
+      - name: Set dynamic variable
+        id: vars
+        run: |
+          echo "::set-output name=n_physical_core::$(echo "$(nproc --all) / $(lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc)"
+
       - name: Check MPI config
         run: |
           . /environment
@@ -58,12 +60,12 @@ jobs:
       - name: Test MPI
         run: |
           . /environment
-          lscpu
           mkdir test-mpi && cd test-mpi
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
-          mpiexec -n 4 ./mpiBench || mpiexec --allow-run-as-root -n 4 ./mpiBench
+          mpiexec -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench ||
+            mpiexec --allow-run-as-root -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench
 
       - name: Check ROOT config
         run: |
@@ -78,11 +80,12 @@ jobs:
       - name: Test ROOT
         run: |
           . /environment
-          root -l -q ${ROOT_TUTORIAL_PATH}/hsimple.C
-          python ${ROOT_TUTORIAL_PATH}/hsimple.C
-          root -l -q ${ROOT_TUTORIAL_PATH}/math/mathmoreIntegration.C
-          root -l -q ${ROOT_TUTORIAL_PATH}/roofit/roofit/rf801_mcstudy.C
-          python ${ROOT_TUTORIAL_PATH}/roofit/roofit/rf801_mcstudy.py
+          root_tutorial_dir=$ROOTSYS/tutorial
+          root -l -q ${root_tutorial_dir}/hsimple.C
+          python ${root_tutorial_dir}/hsimple.C
+          root -l -q ${root_tutorial_dir}/math/mathmoreIntegration.C
+          root -l -q ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.C
+          python ${root_tutorial_dir}/roofit/roofit/rf801_mcstudy.py
 
       - name: Check Geant4 config
         run: |
