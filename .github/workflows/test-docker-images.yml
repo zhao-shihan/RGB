@@ -49,44 +49,7 @@ jobs:
         run: |
           cat > mpirun-test << EOF
           #!/bin/bash
-
-          detect_mpi_type() {
-              local version_output="$(mpirun --version 2>/dev/null)"
-              
-              if echo "$version_output" | grep -qi "open mpi"; then
-                  echo "OpenMPI"
-              elif echo "$version_output" | grep -qi "mpich"; then
-                  echo "MPICH"
-              else
-                  if command -v ompi_info >/dev/null 2>&1; then
-                      echo "OpenMPI"
-                  elif command -v mpichversion >/dev/null 2>&1; then
-                      echo "MPICH"
-                  else
-                      echo "unknown"
-                  fi
-              fi
-          }
-
-          main() {
-              local mpi_type
-              mpi_type=$(detect_mpi_type)
-              case $mpi_type in
-                  "MPICH")
-                      mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@"
-                      ;;
-                  "OpenMPI")
-                      mpirun --allow-run-as-root "$@"
-                      ;;
-                  *)
-                      exit 1
-                      ;;
-              esac
-          }
-
-          if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-              main "$@"
-          fi
+          mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@" || mpirun --allow-run-as-root "$@"
           EOF
           chmod +x mpirun-test
 
