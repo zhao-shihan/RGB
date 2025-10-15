@@ -43,13 +43,16 @@ jobs:
       - name: Set dynamic variables
         id: vars
         run: |
+          . /environment
           echo "wd=$(pwd)" >> $GITHUB_OUTPUT
           echo "n_physical_core=$(echo "$(nproc --all) / $(lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc)" >> $GITHUB_OUTPUT
+          echo "mpi_version_output=\"$(mpirun --version 2>/dev/null)\"" >> $GITHUB_OUTPUT
 
       - name: Prepare MPI run script
         run: |
+          . /environment
           n_physical_core=${{ steps.vars.outputs.n_physical_core }}
-          mpi_version_output="$(mpirun --version 2>/dev/null)"
+          mpi_version_output=${{ steps.vars.outputs.mpi_version_output }}
           cat > mpirun-test << EOF
           #!/bin/bash
           if echo "$mpi_version_output" | grep 'HYDRA'; then
