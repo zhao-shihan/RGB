@@ -39,6 +39,10 @@ jobs:
 
     name: Test ${{ matrix.image }}
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Setup environment
         run: |
