@@ -64,7 +64,7 @@ jobs:
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
-          mpiexec -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench ||
+          mpiexec -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench || \
             mpiexec --allow-run-as-root -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench
 
       - name: Check ROOT config
@@ -80,6 +80,7 @@ jobs:
       - name: Test ROOT
         run: |
           . /environment
+          mkdir test-root && cd test-root
           root_tutorial_dir=$ROOTSYS/tutorial
           root -l -q ${root_tutorial_dir}/hsimple.C
           python ${root_tutorial_dir}/hsimple.C
