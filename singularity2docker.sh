@@ -184,7 +184,7 @@ if [ -f "/.singularity.d/actions/run" ]; then
 else
     exec /.singularity.d/runscript "$@"
 fi' > ${sandbox}/run_singularity2docker.sh
-echo "CMD [\"/bin/bash\", \"run_singularity2docker.sh\"]" >> $sandbox/Dockerfile
+echo "ENTRYPOINT [\"/bin/bash\", \"run_singularity2docker.sh\"]" >> $sandbox/Dockerfile
 
 ################################################################################
 ### Build ######################################################################
