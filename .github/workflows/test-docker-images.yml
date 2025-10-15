@@ -45,6 +45,52 @@ jobs:
         run: |
           echo "::set-output name=n_physical_core::$(echo "$(nproc --all) / $(lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc)"
 
+      - name: Prepare MPI run script
+        run: |
+          cat > mpirun-test << EOF
+          #!/bin/bash
+
+          detect_mpi_type() {
+              local version_output
+              version_output=$(mpirun --version 2>/dev/null)
+              
+              if echo "$version_output" | grep -qi "open mpi"; then
+                  echo "OpenMPI"
+              elif echo "$version_output" | grep -qi "mpich"; then
+                  echo "MPICH"
+              else
+                  if command -v ompi_info >/dev/null 2>&1; then
+                      echo "OpenMPI"
+                  elif command -v mpichversion >/dev/null 2>&1; then
+                      echo "MPICH"
+                  else
+                      echo "unknown"
+                  fi
+              fi
+          }
+
+          main() {
+              local mpi_type
+              mpi_type=$(detect_mpi_type)
+              
+              echo "检测到 MPI 类型: $mpi_type"
+              
+              case $mpi_type in
+                  "MPICH")
+                      mpirun -n  "$@"
+                      ;;
+                  "OpenMPI")
+                      mpirun --allow-run-as-root "$@"
+                      ;;
+              esac
+          }
+
+          if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+              main "$@"
+          fi
+          EOF
+          chmod +x mpirun-test
+
       - name: Check MPI config
         run: |
           . /environment
@@ -64,8 +110,7 @@ jobs:
           git clone https://github.com/LLNL/mpiBench.git
           cd mpiBench
           make
-          mpiexec -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench || \
-            mpiexec --allow-run-as-root -n ${{ steps.vars.outputs.n_physical_core }} ./mpiBench
+          ../mpirun-test ./mpiBench
 
       - name: Check ROOT config
         run: |
