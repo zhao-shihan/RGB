@@ -51,8 +51,8 @@ auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shi
 auto_retry 999 "apptainer push rgb_$DEFAULT_MPI-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-slim" &
 for mpi in mpich openmpi; do
     auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi" &
-    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi-slim" &
     auto_retry 999 "apptainer push rgb_$mpi.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi" &
+    auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:latest-$mpi-slim" &
     auto_retry 999 "apptainer push rgb_$mpi-slim.sif oras://ghcr.io/zhao-shihan/rgb:$IMAGE_VERSION-$mpi-slim" &
 done
 wait
