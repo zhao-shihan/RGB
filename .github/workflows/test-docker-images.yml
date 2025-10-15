@@ -51,8 +51,7 @@ jobs:
           #!/bin/bash
 
           detect_mpi_type() {
-              local version_output
-              version_output=$(mpirun --version 2>/dev/null)
+              local version_output="$(mpirun --version 2>/dev/null)"
               
               if echo "$version_output" | grep -qi "open mpi"; then
                   echo "OpenMPI"
