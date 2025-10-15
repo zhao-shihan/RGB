@@ -79,6 +79,9 @@ jobs:
                   "OpenMPI")
                       mpirun --allow-run-as-root "$@"
                       ;;
+                  *)
+                      exit 1
+                      ;;
               esac
           }
 
