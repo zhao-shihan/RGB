@@ -1,4 +1,4 @@
-name: Test docker images on <<<virtual-machine>>>
+name: Test docker images
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  test-docker-images-on-<<<virtual-machine>>>:
-    runs-on: <<<os-label>>>-latest
+  test-docker-images:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
@@ -43,8 +43,8 @@ jobs:
       - name: Set dynamic variables
         id: vars
         run: |
-          echo "wd=$(pwd)" >> $GITHUB_OUTPUT
-          echo "n_physical_core=$(echo "$(nproc --all) / $(lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc)" >> $GITHUB_OUTPUT
+          echo "{wd}={$(pwd)}" >> $GITHUB_OUTPUT
+          echo "{n_physical_core}={$(echo "$(nproc --all) / $(lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc)}" >> $GITHUB_OUTPUT
 
       - name: Prepare MPI run script
         run: |
