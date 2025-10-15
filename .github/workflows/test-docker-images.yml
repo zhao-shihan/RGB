@@ -92,7 +92,7 @@ jobs:
         run: |
           . /environment
           mkdir test-root && cd test-root
-          root_tutorial_dir=$ROOTSYS/tutorial
+          root_tutorial_dir=$ROOTSYS/tutorials
           root -l -q ${root_tutorial_dir}/hsimple.C
           python ${root_tutorial_dir}/hsimple.C
           root -l -q ${root_tutorial_dir}/math/mathmoreIntegration.C
