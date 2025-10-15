@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 env:
-  VERSION: 25.10.14
   ROOT_TUTORIAL_PATH: /opt/root/6.36.04/cxx20/tutorials
 
 jobs:
@@ -29,23 +28,18 @@ jobs:
           - "ghcr.io/zhao-shihan/rgb-docker:latest-mpich-slim"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-mpich"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-mpich-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-openmpi"
-          - "ghcr.io/zhao-shihan/rgb-docker:${VERSION}-openmpi-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-mpich"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-mpich-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-openmpi"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-openmpi-slim"
 
     container: ${{ matrix.image }}
 
     name: Test ${{ matrix.image }}
 
     steps:
-      - name: Set dynamic variables
-        id: vars
-        run: |
-          echo "::set-output name=version::${VERSION}"
-  
       - name: Check MPI config
         run: |
           mpirun --version
