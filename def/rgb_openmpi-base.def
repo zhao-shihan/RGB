@@ -28,6 +28,6 @@ From: rgb_base.sif
     MPI openmpi-deb13
 
 %environment
-    export OMPI_CC=fastgcc
-    export OMPI_CXX=fastg++
-    export OMPI_FC=fastgfortran
+    export OMPI_CC=gcc-fast
+    export OMPI_CXX=g++-fast
+    export OMPI_FC=gfortran-fast

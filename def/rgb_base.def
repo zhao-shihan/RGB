@@ -148,34 +148,34 @@ From: debian:{{DEBIAN_VERSION}}
         python-dev-is-python3 \
         libmimalloc3
 
-    fastgcc_path=/usr/local/bin/fastgcc
-    echo '#!/bin/bash' >$fastgcc_path
-    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgcc_path
-    chmod +x $fastgcc_path
-    update-alternatives --install /usr/bin/cc cc $fastgcc_path 100
+    gcc_fast_path=/usr/local/bin/gcc-fast
+    echo '#!/bin/bash' >$gcc_fast_path
+    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gcc_fast_path
+    chmod +x $gcc_fast_path
+    update-alternatives --install /usr/bin/cc cc $gcc_fast_path 100
 
-    fastgxx_path=/usr/local/bin/fastg++
-    echo '#!/bin/bash' >$fastgxx_path
-    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgxx_path
-    chmod +x $fastgxx_path
-    update-alternatives --install /usr/bin/c++ c++ $fastgxx_path 100
+    gxx_fast_path=/usr/local/bin/g++-fast
+    echo '#!/bin/bash' >$gxx_fast_path
+    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gxx_fast_path
+    chmod +x $gxx_fast_path
+    update-alternatives --install /usr/bin/c++ c++ $gxx_fast_path 100
 
-    fastgfortran_path=/usr/local/bin/fastgfortran
-    echo '#!/bin/bash' >$fastgfortran_path
-    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastgfortran_path
-    chmod +x $fastgfortran_path
-    update-alternatives --install /usr/bin/f77 f77 $fastgfortran_path 100
-    update-alternatives --install /usr/bin/f95 f95 $fastgfortran_path 100
+    gfortran_fast_path=/usr/local/bin/gfortran-fast
+    echo '#!/bin/bash' >$gfortran_fast_path
+    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gfortran_fast_path
+    chmod +x $gfortran_fast_path
+    update-alternatives --install /usr/bin/f77 f77 $gfortran_fast_path 100
+    update-alternatives --install /usr/bin/f95 f95 $gfortran_fast_path 100
 
-    fastclang_path=/usr/local/bin/fastclang
-    echo '#!/bin/bash' >$fastclang_path
-    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastclang_path
-    chmod +x $fastclang_path
+    clang_fast_path=/usr/local/bin/clang-fast
+    echo '#!/bin/bash' >$clang_fast_path
+    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clang_fast_path
+    chmod +x $clang_fast_path
 
-    fastclangxx_path=/usr/local/bin/fastclang++
-    echo '#!/bin/bash' >$fastclangxx_path
-    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$fastclangxx_path
-    chmod +x $fastclangxx_path
+    clangxx_fast_path=/usr/local/bin/clang++-fast
+    echo '#!/bin/bash' >$clangxx_fast_path
+    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clangxx_fast_path
+    chmod +x $clangxx_fast_path
 
     cd /opt
 

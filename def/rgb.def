@@ -34,8 +34,8 @@ From: {{BASE}}
         cd build-$arch
         cmake -G Ninja ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=fastclang \
-            -DCMAKE_CXX_COMPILER=fastclang++ \
+            -DCMAKE_C_COMPILER=clang-fast \
+            -DCMAKE_CXX_COMPILER=clang++-fast \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
@@ -67,8 +67,8 @@ From: {{BASE}}
         cd build-$arch
         cmake -G Ninja ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=fastgcc \
-            -DCMAKE_CXX_COMPILER=fastg++ \
+            -DCMAKE_C_COMPILER=gcc-fast \
+            -DCMAKE_CXX_COMPILER=g++-fast \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
@@ -112,9 +112,9 @@ From: {{BASE}}
         cd build-$arch
         cmake ../src/ \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=fastgcc \
-            -DCMAKE_CXX_COMPILER=fastg++ \
-            -DCMAKE_Fortran_COMPILER=fastgfortran \
+            -DCMAKE_C_COMPILER=gcc-fast \
+            -DCMAKE_CXX_COMPILER=g++-fast \
+            -DCMAKE_Fortran_COMPILER=gfortran-fast \
             -DCMAKE_C_STANDARD=17 \
             -DCMAKE_CXX_STANDARD=20 \
             -DBUILD_SHARED_LIBS=ON \

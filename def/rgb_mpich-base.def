@@ -50,10 +50,10 @@ From: rgb_base.sif
             --with-pic \
             --with-libfabric=/usr \
             --with-hwloc=/usr \
-            CC=fastgcc \
-            CXX=fastg++ \
-            F77=fastgfortran \
-            FC=fastgfortran \
+            CC=gcc-fast \
+            CXX=g++-fast \
+            F77=gfortran-fast \
+            FC=gfortran-fast \
             CFLAGS="-march=$arch" \
             CXXFLAGS="-march=$arch" \
             FFLAGS="-march=$arch" \
@@ -93,6 +93,6 @@ From: rgb_base.sif
     export MANPATH=$MPICH_DIR/share/man:$MANPATH
     export CMAKE_PREFIX_PATH=$MPICH_DIR:$CMAKE_PREFIX_PATH
 
-    export MPICH_CC=fastgcc
-    export MPICH_CXX=fastg++
-    export MPICH_FC=fastgfortran
+    export MPICH_CC=gcc-fast
+    export MPICH_CXX=g++-fast
+    export MPICH_FC=gfortran-fast
