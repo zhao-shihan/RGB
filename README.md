@@ -16,42 +16,51 @@ These containers ship pre-built, optimized ROOT, Geant4, MPI, etc. and their dep
     - [Build and run your own apps](#build-and-run-your-own-apps)
   - [Notice](#notice)
     - [About SIMD](#about-simd)
+  - [How to build](#how-to-build)
 
 ## Quick start
 
 ### How to pull
 
-**Pull the image by:**
+**Pull the apptainer image by:**
+```bash
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:<tag><aux>
+```
+**Pull the docker image by:**
+```bash
+docker pull ghcr.io/zhao-shihan/rgb-docker:<tag><aux>
+```
+Docker images are converted from apptainer images.
 
-- **`apptainer pull oras://ghcr.io/zhao-shihan/rgb:<tag><aux>`**
 - **`<tag>` can be one of the followings: `mpich`, `openmpi`.**
 - **`<aux>` can be nothing or `-slim`. `-slim` version do not contain G4 data, smaller in size, but you need to install Geant4 data in your machine and setup environment variables.**
 
 For example, `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich` pulls down an container that MPI library is MPICH.
 
-**You should choose the correct MPI tag that compatible with MPI that installed in your machine, in order to do parallel computation correctly.** 
+**For apptainer image, you should choose the correct MPI tag that compatible with MPI that installed in your machine, in order to do parallel computation correctly.** 
 
 If you don't care about MPI and just want a multi-purpose container , then
-
-- `apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich`
-
+```
+apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich
+docker pull ghcr.io/zhao-shihan/rgb:mpich
+```
 should be good enough.
 
 All available pull commands are listed below:
 ```bash
 apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich
-```
-```bash
 apptainer pull oras://ghcr.io/zhao-shihan/rgb:mpich-slim
-```
-```bash
 apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi
-```
-```bash
 apptainer pull oras://ghcr.io/zhao-shihan/rgb:openmpi-slim
+docker pull ghcr.io/zhao-shihan/rgb-docker:mpich
+docker pull ghcr.io/zhao-shihan/rgb-docker:mpich-slim
+docker pull ghcr.io/zhao-shihan/rgb-docker:openmpi
+docker pull ghcr.io/zhao-shihan/rgb-docker:openmpi-slim
 ```
 
 ### How to run
+
+This section shows how to run with the apptainer image. The usage of docker image is similar but in docker convention.
 
 #### Simple usage
 
@@ -137,3 +146,16 @@ You can also compile your favorite applications that depend on ROOT/Geant4 with 
 
 SIMD support is enabled and auto-detected at runtime, by probing the host CPU features. Supported instruction sets includes x86-64-v3 (up to AVX2, AVX, FMA, etc., binaries in /opt/x86-64-v3) and x86-64-v2 (up to SSE4.2, SSSE3, SSE3, etc., binaries in /opt/x86-64-v2).
 It will automatically choose the most advanced instruction sets available on your machine. Almost all x86 machines produced after 2010 supports x86-64-v2.
+
+## How to build
+
+```bash
+# build
+bash build.bash
+sudo bash build-docker.bash
+# sign apptainer image
+bash sign.bash
+# push
+bash push.bash
+sudo bash push-docker.bash
+```
