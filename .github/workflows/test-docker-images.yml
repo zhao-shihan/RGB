@@ -54,7 +54,7 @@ jobs:
               $(pwd)/mpirun -n ${{ steps.vars.outputs.n_physical_core }} "$@"
           elif echo "$version_output" | grep 'Open MPI'; then
               $(pwd)/mpirun --allow-run-as-root "$@"
-          else
+          fi
           EOF
           chmod +x mpirun-test
 
