@@ -15,8 +15,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 apptainer build \
-    --build-arg SOURCE_ARCHIVE_HOST_DIR="$(pwd)/src" \
-    --build-arg G4DATA_ARCHIVE_HOST_DIR="$(pwd)/g4data" \
+    --build-arg PACKAGE_HOST_DIR="$(pwd)/pkg" \
+    --build-arg DATA_HOST_DIR="$(pwd)/data" \
     rgb_base.sif \
     def/rgb_base.def
 

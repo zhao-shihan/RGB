@@ -27,12 +27,12 @@ jobs:
           - "ghcr.io/zhao-shihan/rgb-docker:latest-mpich-slim"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi"
           - "ghcr.io/zhao-shihan/rgb-docker:latest-openmpi-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-mpich"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-mpich-slim"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-openmpi"
-          - "ghcr.io/zhao-shihan/rgb-docker:25.10.14-openmpi-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15-mpich"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15-mpich-slim"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15-openmpi"
+          - "ghcr.io/zhao-shihan/rgb-docker:25.10.15-openmpi-slim"
 
     container: ${{ matrix.image }}
 

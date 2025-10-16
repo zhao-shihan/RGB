@@ -18,16 +18,13 @@ Bootstrap: localimage
 From: rgb_base.sif
 
 %post
-    apt -y update
-    apt -y full-upgrade
     apt -y install libopenmpi-dev
-    apt -y autopurge
     apt clean
 
 %labels
-    MPI openmpi-deb13
+    MPI openmpi-debian
 
 %environment
-    export OMPI_CC=gcc-fast
-    export OMPI_CXX=g++-fast
-    export OMPI_FC=gfortran-fast
+    export OMPI_CC=gcc-opt
+    export OMPI_CXX=g++-opt
+    export OMPI_FC=gfortran-opt

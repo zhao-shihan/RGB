@@ -37,30 +37,30 @@ From: debian:{{DEBIAN_VERSION}}
     G4TENDL_VERSION=1.4
     G4NUDEXLIB_VERSION=1.0
     G4URRPT_VERSION=1.1
-    SOURCE_ARCHIVE_HOST_DIR=
-    G4DATA_ARCHIVE_HOST_DIR=
+    PACKAGE_HOST_DIR=
+    DATA_HOST_DIR=
 
 %files
     # Sources
-    {{SOURCE_ARCHIVE_HOST_DIR}}/root_v{{ROOT_VERSION}}.source.tar.gz /opt
-    {{SOURCE_ARCHIVE_HOST_DIR}}/geant4-v{{GEANT4_VERSION}}.tar.gz /opt
-    {{SOURCE_ARCHIVE_HOST_DIR}}/garfieldpp-{{GARFIELDPP_VERSION}}.tar.gz /opt
+    {{PACKAGE_HOST_DIR}}/root_v{{ROOT_VERSION}}.source.tar.gz /opt
+    {{PACKAGE_HOST_DIR}}/geant4-v{{GEANT4_VERSION}}.tar.gz /opt
+    {{PACKAGE_HOST_DIR}}/garfieldpp-{{GARFIELDPP_VERSION}}.tar.gz /opt
     # Geant4 data
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4NDL.{{G4NDL_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4EMLOW.{{G4EMLOW_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4PhotonEvaporation.{{G4PhotonEvaporation_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4RadioactiveDecay.{{G4RadioactiveDecay_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4PARTICLEXS.{{G4PARTICLEXS_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4PII.{{G4PII_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4RealSurface.{{G4RealSurface_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4SAIDDATA.{{G4SAIDDATA_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4ABLA.{{G4ABLA_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4INCL.{{G4INCL_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4ENSDFSTATE.{{G4ENSDFSTATE_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4CHANNELING.{{G4CHANNELING_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4TENDL.{{G4TENDL_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4NUDEXLIB.{{G4NUDEXLIB_VERSION}}.tar.gz /opt
-    {{G4DATA_ARCHIVE_HOST_DIR}}/G4URRPT.{{G4URRPT_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4NDL.{{G4NDL_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4EMLOW.{{G4EMLOW_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4PhotonEvaporation.{{G4PhotonEvaporation_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4RadioactiveDecay.{{G4RadioactiveDecay_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4PARTICLEXS.{{G4PARTICLEXS_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4PII.{{G4PII_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4RealSurface.{{G4RealSurface_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4SAIDDATA.{{G4SAIDDATA_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4ABLA.{{G4ABLA_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4INCL.{{G4INCL_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4ENSDFSTATE.{{G4ENSDFSTATE_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4CHANNELING.{{G4CHANNELING_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4TENDL.{{G4TENDL_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4NUDEXLIB.{{G4NUDEXLIB_VERSION}}.tar.gz /opt
+    {{DATA_HOST_DIR}}/g4data/G4URRPT.{{G4URRPT_VERSION}}.tar.gz /opt
 
 %post
     sed -i 's/deb\.debian\.org/ftp.cn.debian.org/g' /etc/apt/sources.list.d/debian.sources
@@ -148,34 +148,34 @@ From: debian:{{DEBIAN_VERSION}}
         python-dev-is-python3 \
         libmimalloc3
 
-    gcc_fast_path=/usr/local/bin/gcc-fast
-    echo '#!/bin/bash' >$gcc_fast_path
-    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gcc_fast_path
-    chmod +x $gcc_fast_path
-    update-alternatives --install /usr/bin/cc cc $gcc_fast_path 100
+    gcc_opt_path=/usr/local/bin/gcc-opt
+    echo '#!/bin/bash' >$gcc_opt_path
+    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gcc_opt_path
+    chmod +x $gcc_opt_path
+    update-alternatives --install /usr/bin/cc cc $gcc_opt_path 100
 
-    gxx_fast_path=/usr/local/bin/g++-fast
-    echo '#!/bin/bash' >$gxx_fast_path
-    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gxx_fast_path
-    chmod +x $gxx_fast_path
-    update-alternatives --install /usr/bin/c++ c++ $gxx_fast_path 100
+    gxx_opt_path=/usr/local/bin/g++-opt
+    echo '#!/bin/bash' >$gxx_opt_path
+    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gxx_opt_path
+    chmod +x $gxx_opt_path
+    update-alternatives --install /usr/bin/c++ c++ $gxx_opt_path 100
 
-    gfortran_fast_path=/usr/local/bin/gfortran-fast
-    echo '#!/bin/bash' >$gfortran_fast_path
-    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gfortran_fast_path
-    chmod +x $gfortran_fast_path
-    update-alternatives --install /usr/bin/f77 f77 $gfortran_fast_path 100
-    update-alternatives --install /usr/bin/f95 f95 $gfortran_fast_path 100
+    gfortran_opt_path=/usr/local/bin/gfortran-opt
+    echo '#!/bin/bash' >$gfortran_opt_path
+    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gfortran_opt_path
+    chmod +x $gfortran_opt_path
+    update-alternatives --install /usr/bin/f77 f77 $gfortran_opt_path 100
+    update-alternatives --install /usr/bin/f95 f95 $gfortran_opt_path 100
 
-    clang_fast_path=/usr/local/bin/clang-fast
-    echo '#!/bin/bash' >$clang_fast_path
-    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clang_fast_path
-    chmod +x $clang_fast_path
+    clang_opt_path=/usr/local/bin/clang-opt
+    echo '#!/bin/bash' >$clang_opt_path
+    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clang_opt_path
+    chmod +x $clang_opt_path
 
-    clangxx_fast_path=/usr/local/bin/clang++-fast
-    echo '#!/bin/bash' >$clangxx_fast_path
-    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clangxx_fast_path
-    chmod +x $clangxx_fast_path
+    clangxx_opt_path=/usr/local/bin/clang++-opt
+    echo '#!/bin/bash' >$clangxx_opt_path
+    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clangxx_opt_path
+    chmod +x $clangxx_opt_path
 
     cd /opt
 
@@ -253,9 +253,6 @@ From: debian:{{DEBIAN_VERSION}}
     tar -xf G4URRPT.tar.gz
     rm G4URRPT.tar.gz
     cd ..
-
-    apt -y autopurge
-    apt clean
 
 %labels
     Author zhaoshihan

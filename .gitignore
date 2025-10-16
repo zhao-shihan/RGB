@@ -4,8 +4,8 @@
 *.old
 *.out
 *.sif
-g4data/
+data/
 MACE/
 old/
-src/
+pkg/
 tmp/

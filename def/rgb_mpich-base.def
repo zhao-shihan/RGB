@@ -21,10 +21,7 @@ From: rgb_base.sif
     MPICH_VERSION=4.3.2
 
 %post
-    apt -y update
-    apt -y full-upgrade
     apt -y install libfabric-dev libhwloc-dev libibverbs-dev rdma-core librdmacm-dev libpsm2-dev libpsm-infinipath1-dev
-    apt -y autopurge
     apt clean
 
     cd /opt
@@ -40,7 +37,7 @@ From: rgb_base.sif
             --prefix=/opt/$arch/mpich \
             --build=x86_64-unknown-linux-gnu \
             --disable-g \
-            --enable-fast=O3,ndebug,alwaysinline \
+            --enable-opt=O3,ndebug,alwaysinline \
             --enable-threads=multiple \
             --disable-dependency-tracking \
             --enable-shared \
@@ -50,10 +47,10 @@ From: rgb_base.sif
             --with-pic \
             --with-libfabric=/usr \
             --with-hwloc=/usr \
-            CC=gcc-fast \
-            CXX=g++-fast \
-            F77=gfortran-fast \
-            FC=gfortran-fast \
+            CC=gcc-opt \
+            CXX=g++-opt \
+            F77=gfortran-opt \
+            FC=gfortran-opt \
             CFLAGS="-march=$arch" \
             CXXFLAGS="-march=$arch" \
             FFLAGS="-march=$arch" \
@@ -93,6 +90,6 @@ From: rgb_base.sif
     export MANPATH=$MPICH_DIR/share/man:$MANPATH
     export CMAKE_PREFIX_PATH=$MPICH_DIR:$CMAKE_PREFIX_PATH
 
-    export MPICH_CC=gcc-fast
-    export MPICH_CXX=g++-fast
-    export MPICH_FC=gfortran-fast
+    export MPICH_CC=gcc-opt
+    export MPICH_CXX=g++-opt
+    export MPICH_FC=gfortran-opt
