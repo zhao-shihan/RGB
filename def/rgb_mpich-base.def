@@ -47,10 +47,10 @@ From: rgb_base.sif
             --with-pic \
             --with-libfabric=/usr \
             --with-hwloc=/usr \
-            CC=gcc-opt \
-            CXX=g++-opt \
-            F77=gfortran-opt \
-            FC=gfortran-opt \
+            CC=gcc \
+            CXX=g++ \
+            F77=gfortran \
+            FC=gfortran \
             CFLAGS="-march=$arch" \
             CXXFLAGS="-march=$arch" \
             FFLAGS="-march=$arch" \
