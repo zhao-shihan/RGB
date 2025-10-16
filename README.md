@@ -1,5 +1,7 @@
 # RGB (*R*OOT and *G*eant4 *b*asic image)
 
+[![Test docker images](https://github.com/zhao-shihan/RGB/actions/workflows/test-docker-images.yml/badge.svg)](https://github.com/zhao-shihan/RGB/actions/workflows/test-docker-images.yml)
+
 These containers ship pre-built, optimized ROOT, Geant4, MPI, etc. and their dependencies.
 
 ## Contents
@@ -134,8 +136,11 @@ You can also compile your favorite applications that depend on ROOT/Geant4 with 
 
 ### About SIMD
 
-SIMD support is enabled and auto-detected at runtime, by probing the host CPU features. Supported instruction sets includes x86-64-v3 (up to AVX2, AVX, FMA, etc., binaries in /opt/x86-64-v3) and x86-64-v2 (up to SSE4.2, SSSE3, SSE3, etc., binaries in /opt/x86-64-v2).
-It will automatically choose the most advanced instruction sets available on your machine. Almost all x86 machines produced after 2010 supports x86-64-v2.
+SIMD support is enabled and auto-detected at runtime, by probing the host CPU features.
+
+Supported x86_64 ABI includes x86-64-v4 (up to AVX512F, etc., binaries in /opt/x86-64-v4) and x86-64-v3 (up to AVX2, AVX, FMA, etc., binaries in /opt/x86-64-v3).
+
+It will automatically choose the most advanced instruction sets available on your machine. Almost all x86 machines produced after 2012 supports x86-64-v3. Ancient machines are not supported.
 
 ## How to build and push
 
