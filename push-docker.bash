@@ -27,6 +27,9 @@ REGISTRY_USERNAME=$2
 REGISTRY_PASSWORD=$3
 DEFAULT_MPI=mpich
 
+echo "Image version $IMAGE_VERSION, are you sure?"
+read
+
 success_or_exit "docker login ghcr.io --username $REGISTRY_USERNAME --password $REGISTRY_PASSWORD"
 
 success_or_exit "docker tag rgb-docker:$DEFAULT_MPI ghcr.io/zhao-shihan/rgb-docker:latest"
