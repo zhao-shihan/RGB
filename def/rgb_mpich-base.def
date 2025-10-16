@@ -30,7 +30,7 @@ From: rgb_base.sif
     wget -c -t=999 https://www.mpich.org/static/downloads/{{MPICH_VERSION}}/mpich-{{MPICH_VERSION}}.tar.gz -O mpich.tar.gz
     tar -xf mpich.tar.gz
 
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
         ../mpich-{{MPICH_VERSION}}/configure \
@@ -63,14 +63,14 @@ From: rgb_base.sif
     done
     wait
 
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         cd build-$arch
         make -j$(echo "$(nproc --all) / $(env LC_ALL=C lscpu | grep "Thread(s) per core" | awk '{print $4}')" | bc) &
         cd ..
     done
     wait
 
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         cd build-$arch
         make install
         cd ..
@@ -83,7 +83,7 @@ From: rgb_base.sif
     MPI mpich-{{MPICH_VERSION}}
 
 %environment
-    MPICH_DIR=/opt/$RUNTIME_X86_VERSION/mpich
+    MPICH_DIR=/opt/$HOST_AMD64_ABI_VERSION/mpich
     export PATH=$MPICH_DIR/bin:$PATH
     export LIBRARY_PATH=$MPICH_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$MPICH_DIR/lib:$LD_LIBRARY_PATH

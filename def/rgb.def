@@ -24,7 +24,7 @@ From: {{BASE}}
     cd /opt
 
     cd root-build
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
         cmake -G Ninja ../src/ \
@@ -57,7 +57,7 @@ From: {{BASE}}
     rm -rf root-build
 
     cd geant4-build
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         mkdir build-$arch
         cd build-$arch
         cmake -G Ninja ../src/ \
@@ -101,7 +101,7 @@ From: {{BASE}}
     }
 
     cd garfieldpp-build
-    for arch in 'x86-64-v3' 'x86-64-v2'; do
+    for arch in 'x86-64-v4' 'x86-64-v3'; do
         update_root_env $arch
         mkdir build-$arch
         cd build-$arch
@@ -126,13 +126,13 @@ From: {{BASE}}
     rm -rf garfieldpp-build
 
 %environment
-    GEANT4_DIR=/opt/$RUNTIME_X86_VERSION/geant4
+    GEANT4_DIR=/opt/$HOST_AMD64_ABI_VERSION/geant4
     export PATH=$GEANT4_DIR/bin:$PATH
     export LIBRARY_PATH=$GEANT4_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$GEANT4_DIR/lib:$LD_LIBRARY_PATH
     export CMAKE_PREFIX_PATH=$GEANT4_DIR:$CMAKE_PREFIX_PATH
 
-    ROOT_DIR=/opt/$RUNTIME_X86_VERSION/root
+    ROOT_DIR=/opt/$HOST_AMD64_ABI_VERSION/root
     export PATH=$ROOT_DIR/bin:$PATH
     export LIBRARY_PATH=$ROOT_DIR/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$ROOT_DIR/lib:$LD_LIBRARY_PATH
@@ -144,7 +144,7 @@ From: {{BASE}}
     export ROOTSYS=$ROOT_DIR
     export CLING_STANDARD_PCH=none
 
-    export GARFIELDPP_INSTALL=/opt/$RUNTIME_X86_VERSION/garfieldpp
+    export GARFIELDPP_INSTALL=/opt/$HOST_AMD64_ABI_VERSION/garfieldpp
     export LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$GARFIELDPP_INSTALL/lib:$LD_LIBRARY_PATH
     export CMAKE_PREFIX_PATH=$GARFIELDPP_INSTALL:$CMAKE_PREFIX_PATH

@@ -18,7 +18,7 @@ Bootstrap: docker
 From: debian:{{DEBIAN_VERSION}}
 
 %arguments
-    DEBIAN_VERSION=stable-slim
+    DEBIAN_VERSION=forky-slim
     ROOT_VERSION=6.36.04
     GEANT4_VERSION=11.3.2
     GARFIELDPP_VERSION=5.0
@@ -150,31 +150,31 @@ From: debian:{{DEBIAN_VERSION}}
 
     gcc_opt_path=/usr/local/bin/gcc-opt
     echo '#!/bin/bash' >$gcc_opt_path
-    echo $(which gcc)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gcc_opt_path
+    echo $(which gcc)' -O3 -march=$HOST_AMD64_ABI_VERSION $@' >>$gcc_opt_path
     chmod +x $gcc_opt_path
     update-alternatives --install /usr/bin/cc cc $gcc_opt_path 100
 
     gxx_opt_path=/usr/local/bin/g++-opt
     echo '#!/bin/bash' >$gxx_opt_path
-    echo $(which g++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gxx_opt_path
+    echo $(which g++)' -O3 -march=$HOST_AMD64_ABI_VERSION $@' >>$gxx_opt_path
     chmod +x $gxx_opt_path
     update-alternatives --install /usr/bin/c++ c++ $gxx_opt_path 100
 
     gfortran_opt_path=/usr/local/bin/gfortran-opt
     echo '#!/bin/bash' >$gfortran_opt_path
-    echo $(which gfortran)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$gfortran_opt_path
+    echo $(which gfortran)' -O3 -march=$HOST_AMD64_ABI_VERSION $@' >>$gfortran_opt_path
     chmod +x $gfortran_opt_path
     update-alternatives --install /usr/bin/f77 f77 $gfortran_opt_path 100
     update-alternatives --install /usr/bin/f95 f95 $gfortran_opt_path 100
 
     clang_opt_path=/usr/local/bin/clang-opt
     echo '#!/bin/bash' >$clang_opt_path
-    echo $(which clang)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clang_opt_path
+    echo $(which clang)' -O3 -march=$HOST_AMD64_ABI_VERSION $@' >>$clang_opt_path
     chmod +x $clang_opt_path
 
     clangxx_opt_path=/usr/local/bin/clang++-opt
     echo '#!/bin/bash' >$clangxx_opt_path
-    echo $(which clang++)' -O3 -march=$RUNTIME_X86_VERSION $@' >>$clangxx_opt_path
+    echo $(which clang++)' -O3 -march=$HOST_AMD64_ABI_VERSION $@' >>$clangxx_opt_path
     chmod +x $clangxx_opt_path
 
     cd /opt
@@ -285,10 +285,10 @@ From: debian:{{DEBIAN_VERSION}}
             return 1
         fi
     }
-    if cpu_has_feature avx && cpu_has_feature avx2 && cpu_has_feature bmi && cpu_has_feature bmi2 && cpu_has_feature f16c && cpu_has_feature fma && cpu_has_feature movbe && cpu_has_feature xsave; then
-        export RUNTIME_X86_VERSION=x86-64-v3
-    elif cpu_has_feature cx16 && cpu_has_feature lahf && cpu_has_feature popcnt && cpu_has_feature sse3 && cpu_has_feature sse4.1 && cpu_has_feature sse4.2 && cpu_has_feature ssse3; then
-        export RUNTIME_X86_VERSION=x86-64-v2
+    if cpu_has_feature avx512f && cpu_has_feature avx512bw && cpu_has_feature avx512cd && cpu_has_feature avx512dq && cpu_has_feature avx512vl; then
+        export HOST_AMD64_ABI_VERSION=x86-64-v4
+    elif cpu_has_feature avx && cpu_has_feature avx2 && cpu_has_feature bmi && cpu_has_feature bmi2 && cpu_has_feature f16c && cpu_has_feature fma && cpu_has_feature movbe && cpu_has_feature xsave; then
+        export HOST_AMD64_ABI_VERSION=x86-64-v3
     else
         echo "Warning: this machine is ancient!"
     fi
