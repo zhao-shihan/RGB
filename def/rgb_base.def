@@ -66,13 +66,14 @@ From: debian:{{DEBIAN_VERSION}}
     sed -i 's/deb\.debian\.org/ftp.cn.debian.org/g' /etc/apt/sources.list.d/debian.sources
 
     apt -y update
-    apt -y install apt-utils
     apt -y full-upgrade
     apt -y autopurge
     apt -y install \
         build-essential \
         gfortran \
         clang \
+        clang-format \
+        clang-tidy \
         gdb \
         wget \
         curl \
