@@ -34,6 +34,5 @@ function build {
             def/slim.def
 }
 
-build mpich &
-build openmpi &
-wait
+build mpich
+build openmpi
