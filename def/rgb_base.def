@@ -18,7 +18,7 @@ Bootstrap: docker
 From: debian:{{DEBIAN_VERSION}}
 
 %arguments
-    DEBIAN_VERSION=forky-slim
+    DEBIAN_VERSION=stable-slim
     ROOT_VERSION=6.36.04
     GEANT4_VERSION=11.3.2
     GARFIELDPP_VERSION=5.0
@@ -63,8 +63,6 @@ From: debian:{{DEBIAN_VERSION}}
     {{DATA_HOST_DIR}}/g4data/G4URRPT.{{G4URRPT_VERSION}}.tar.gz /opt
 
 %post
-    sed -i 's/deb\.debian\.org/ftp.cn.debian.org/g' /etc/apt/sources.list.d/debian.sources
-
     apt -y update
     apt -y full-upgrade
     apt -y autopurge
